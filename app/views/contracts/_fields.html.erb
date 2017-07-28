@@ -1,0 +1,19 @@
+        <% if params[:template_id].nil? and @contract.template_id.nil?%>
+          <div class="alert alert-info">
+            <%= t('contracts.select_template')%>
+          </div>
+        <% elsif contract_fields.length == 0%>
+          <div class="alert alert-info">
+            <%= t('contracts.no_fields')%>
+          </div>
+        <% else %>
+          <%= builder.fields_for :contract_fields, contract_fields do |contract_field| %>
+          <div class="row form-group">
+          	<%key = Signme::Field.find(contract_field.object.field_id).key%>
+            <div class="col-sm-12">
+              <%= contract_field.text_field :value, {placeholder: key, class: "form-control", required: "true", :disabled => disabled} %>
+            </div>
+            <%= contract_field.hidden_field :field_id %>
+          </div>
+          <% end %>
+        <% end %>

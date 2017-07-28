@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1 style="color: #000; font-size: 18px; font-weight: bold; margin: 0 0 10px;"><%= "#{t('signer_notifier.trial_end.reminder')}" %></h1>
+    <hr style="background-color: #cccccc; border: medium none; color: #cccccc; height: 1px;">
+    <p style="color: #000; font-size: 14px; line-height: 1.4em; margin: 10px 0;">
+        <%= "#{t('signer_notifier.contract_status_owner.hi')} #{@account.user.username} ,"%>
+        <br>
+        <%= "#{t('signer_notifier.trial_end.friendly_reminder')} "%>
+        <br>
+        <%= "#{t('signer_notifier.trial_end.end_date')} #{(@account.created_at+30).to_date}" %>
+        <br>
+        <a href= "<%= root_url%>"> <%= "#{t('signer_notifier.trial_end.subscribe_now')}"%> </a>
+
+    </p>
+  </body>
+</html>
+
+

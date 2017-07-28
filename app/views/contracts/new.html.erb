@@ -1,0 +1,40 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2><%= t('contracts.new_contract')%></h2>
+    <ol class="breadcrumb">
+        <li>
+            <%= link_to t('home_label'), account_contracts_path(@account) %>
+        </li>
+        <li>
+            <%= link_to t('contracts_label'), account_contracts_path(@account) %>
+        </li>
+        <li class="active">
+            <strong><% t('contracts.new_contract')%></strong>
+        </li>
+    </ol>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content clearfix">
+  <ul class="nav nav-tabs">
+          <li class="active"><a href="#form" data-toggle="tab"><i class="fa fa-edit"></i> <%= action_name == "new" ? t('contracts.new_label') : t('contracts.edit_label')%></a></li>
+          <li>
+            <a href="#preview" data-toggle="tab" id="template-contract"><i class="fa fa-eye"></i> <%= t('contracts.preview_label')%></a>
+          </li>
+      </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="form">
+      <div id="contract-form-box" style="padding-top: 0px">
+        <%= render partial: 'form', locals: { url: account_contracts_path(@account) } %>
+      </div>
+    </div>
+    <div class="tab-pane" id="preview">
+      <div id="contract-preview-box">
+        <div class="alert alert-info">
+          <%= t('contracts.save_preview')%>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

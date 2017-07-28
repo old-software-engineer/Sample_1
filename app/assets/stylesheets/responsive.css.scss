@@ -1,0 +1,151 @@
+@media only screen and (max-width:12001px) {
+  .slider-outer .slider-content {
+    top:120px;
+    a {margin-top:30px;}
+    h1 {font-size:58px;}
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  .slider-outer .slider-content {
+    top:110px;
+    a {width:240px; line-height:38px;}
+    h1 { font-size: 42px; line-height: 42px; margin:0px 20px;}
+  }
+  .packages {
+    padding: 55px 0px 50px;
+  }
+  .packages h2, .sign-up h2 {margin-bottom:30px; font-size:48px; }
+  .sign-up {
+    padding: 40px 0px 50px;
+  } 
+  .slider-outer .flex-control-nav {
+    right: 20px;
+  }
+  .about-company ul li{ padding-left:20px; }
+}
+
+@media only screen and (max-width: 768px) {
+  
+  .header .nav {right:20px;}
+
+  .slider-outer {
+    .flex-control-nav {
+      right:20px;
+      li {margin-bottom: 5px;}
+    }
+    .slider-content {
+      top:70px;
+      a {margin-top:20px;}
+      h1 {margin:0px 20px; font-size:28px; line-height:28px;}
+    }
+  }
+  
+  .header {
+    .logo {margin-top:5px; max-width:30px;}
+    .nav {top:30px;}
+  }
+  
+  .info {
+    height:45px;
+    p {margin-top:5px; font-size:16px;}
+  }
+
+  .inner-wrap{padding:0px;}
+
+  .about-company p, .tested p, .partners p {margin-bottom:20px; text-align:center;}
+  .about-company {
+    padding: 40px 0px 0px;
+    ul{text-align:center;}
+  }
+  .img-outer {margin:0px auto; }
+  .about-company h2, .tested h2, .partners h2 {
+    font-size: 24px;
+    margin: 10px 0px 15px;
+    text-align: center;
+  }
+  .partners {
+    padding: 50px 0px 75px;
+    padding-top: 0px;
+  }
+  .logos ul{text-align:center; }
+  .pro-active{
+    margin-bottom:40px;
+  }
+  .pro-active ul {margin-bottom:20px; }
+  /*.pro-active.plus {
+  margin-top: 40px;
+  }*/
+  .packages h2, .sign-up h2{font-size:44px; }
+
+  .package-title {
+    margin-bottom:20px;
+    h3{font-size:66px;}
+  }
+  .pro-active ul li {line-height:20px;}
+  .sign-up input[type='text'].form-control, .sign-up input[type='email'].form-control, .sign-up select.form-control{margin-bottom:10px; }
+  .sign-up input[type='submit']{margin-top:30px; }
+  .img-outer {text-align:center;}
+  .test-icon {padding:0px; text-align:center;}
+
+  .client {
+    text-align: center;
+    margin-bottom: 60px;
+    max-width: 460px;
+    margin: 0px auto 50px;
+  }
+  .recent-clients h2, .faq h2{ font-size:40px; margin-bottom:10px;  }
+  .faq{ padding-top:60px; }
+
+  .recent-clients {
+    padding: 60px 0px 0px;
+  }
+}
+
+@media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
+  .slider-outer .slider-content {
+    top:40px;
+    h1 {font-size:18px; line-height:18px;}
+    a {width: 160px; line-height: 28px; font-size: 15px;}
+  }
+
+  .header {
+    .logo {max-width:20px;}
+    .nav {top:20px;}
+  }
+  .package-title {
+    padding-top:10px;
+    h3 {
+      font-size:40px; 
+      sup {top:-0.5em; }
+    }
+  }
+  
+  .packages h2, .sign-up h2 {font-size:30px; }
+  .sign-up input[type='submit']{width:240px; }
+  .about-company p, .tested p, .partners p {margin-bottom:15px; font-size:16px; }
+}
+
+// iPhone 2G, 3G, 4, 4S, 5, 5s
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) {
+
+  .info {
+    height: 30px;
+    p {font-size: 12px;}
+  }
+  .slider-outer .flex-control-nav {right: 5px; top: 30%;}
+  .slider-outer .flex-control-nav li a {width: 8px; height: 8px; line-height: 1px;}
+  .slider-outer .slider-content h1 {font-size: 14px; line-height: 18px;}
+  .slider-outer .slider-content a {margin-top: 5px; font-size: 12px; width: 100px; line-height: 18px;}
+}
+
+// iPhone 6, 6 Plus
+@media only screen 
+and (min-device-width : 375px) 
+and (max-device-width : 667px) {
+    .slider-outer .slider-content {
+      top:50px;
+    }
+}

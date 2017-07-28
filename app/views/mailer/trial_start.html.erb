@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <%= "#{t('signer_notifier.contract_status_owner.hi')} #{@user_name} ,"%>
+    <p> <%="#{t('signer_notifier.trial_start.begin_trial')} #{@app.capitalize}" %></p>
+    <p>
+    <strong><%="#{t('signer_notifier.trial_start.sign_account')} #{@app.capitalize}" %></strong>
+    <%= link_to @path, @path %>
+   </p>
+   <p>
+    <strong><%="#{t('signer_notifier.trial_start.login_email')}" %></strong>
+   <%= @email %>
+   </p>
+   <p><%="#{t('signer_notifier.trial_start.enjoy_oppurtunity')} #{@app} #{t('signer_notifier.trial_start.message_continue')}"  %>
+  </body>
+</html>

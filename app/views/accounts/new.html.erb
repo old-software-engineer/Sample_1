@@ -1,0 +1,40 @@
+<div class="row" style="margin-top:20px">
+    <div class="col-md-8">
+      <!-- logo -->
+      <% unless user_signed_in? %>
+        <%= link_to t('login_label'), papaye_url(:domain => host, :subdomain=>"launchpad", locale: params[:locale]), {class: "btn btn-success "} %></li>
+      <% end %>
+       <!-- end logo -->
+    </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+      <%= image_tag("guava.png", :border => 0 ) %>
+      <% if user_signed_in? %>
+        <p><%= t('accounts.already_logged_id') %></p>
+        <%= link_to t('accounts.go_to_dashboard'), dashboard_index_path(locale: params[:locale], id: current_user.id), {class: "btn btn-success "} %></li>
+      <% else %>
+        <p><center> <strong> <%= t('accounts.header_message')%> </strong> </center></p>
+        <div>
+          <%= form_for(@user, url: @url) do |f| %>
+            <div class="form-group">
+              <%= f.text_field :username, {class: "form-control", placeholder: t('username_label'), required: true, autofocus: true} %>
+            </div>
+            <div class="form-group">
+              <%= f.email_field :email, {class: "form-control", placeholder: t('email_label'), required: true} %>
+            </div>
+            <div class="form-group">
+              <%= f.password_field :password, {class: "form-control", placeholder: t('password_label'), required: "", autocomplete: "off"}  %>
+              <% if @validatable %>
+                <em>(<%= "#{@minimum_password_length} #{t('minimun_characters')}" %> )</em>
+              <% end %>
+            </div>
+            <%= f.hidden_field :language, value: (params[:locale] || "en") %>
+            <%= f.submit t('accounts.start_trial'), class: "btn btn-primary block full-width m-b" , style: "white-space: normal" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

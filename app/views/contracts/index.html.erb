@@ -1,0 +1,136 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2><%= t('contracts_label')%></h2>
+    <ol class="breadcrumb">
+      <li>
+        <%= link_to 'Home', account_contracts_path(@account) %>
+      </li>
+      <li class="active">
+        <strong><%= t('contracts_label')%></strong>
+      </li>
+    </ol>
+  </div>
+</div>
+<div class="wrapper wrapper-content  animated fadeInRight">
+  <div class="row">
+    <div class="col-sm-8">
+      <div class="ibox">
+        <div class="ibox-content">
+          <div class="pull-right">
+            <%= link_to t('contracts.add_contract'), new_account_contract_path(@account), class: "btn btn-primary" %>
+          </div>
+          <div class="clearfix"></div>
+          <div class="clients-list">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#tab-1"><i class="fa fa-user"></i> <%= t('contracts.contacts_label')%></a></li>
+            </ul>
+            <div class="tab-content">
+              <div id="tab-1" class="tab-pane active">
+                <div class="full-height-scroll">
+                  <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                      <% @contracts.each do |contract| %>
+                        <tr>
+                          <td class="client-status">
+                            <%= status_label(contract.status) %>
+                          </td>
+                          <td>
+                            <%= link_to "#contract-#{contract.id}", {class: "client-link", data: {toggle: "tab"}} do %>
+                              <strong><%= contract.title  %></strong>
+                            <% end %>
+                          </td>
+                          <td><%= raw contract.message %></td>
+                          <td class="contract-actions">
+                            <% if contract.signed? and contract.url.present?%>
+                              <%= link_to contract.url, title: t('contracts.download_it'), class: "btn btn-white btn-sm" do %>
+                                <i class="fa fa-download"></i>
+                              <%end%>
+                            <%else%>
+                              <%= link_to account_contract_url(@account,contract), title:  t('show_label'), class: "btn btn-white btn-sm" do %>
+                                <i class="fa fa-eye"></i>
+                              <% end %>
+                            <%end%>
+                            <%= link_to edit_account_contract_path(@account,contract), disabled: contract.signed?, title:  t('edit_label'), class: "btn btn-success btn-sm" do %>
+                              <i class="fa fa-pencil"></i>
+                            <% end %>
+                           <%= link_to contract_request_signature_path(contract), disabled: contract.signed?, title: t('request_label'), class: "btn btn-info btn-sm" do %>
+                              <i class="fa fa-pencil-square-o"></i>
+                            <% end %>
+                            <%= link_to account_contract_path(@account,contract), method: :delete, data: { confirm: t('confirm_delete') }, title: t('delete_label'), class: "btn btn-danger btn-sm" do %>
+                              <i class="fa fa-trash"></i>
+                            <% end %>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="ibox">
+        <div class="ibox-content">
+          <div class="tab-content">
+            <% @contracts.each do |contract| %>
+            <div id="contract-<%= contract.id %>" class="tab-pane <%= "active" if contract.id == @contracts.first.id %>">
+              <div class="row m-b-lg">
+                <div class="col-lg-12">
+                  <h2>
+                    <%= contract.title %>&nbsp;&nbsp;
+                  </h2>
+                </div>
+              </div>
+              <div class="contract-detail">
+
+                <% unless contract.signers.nil? || contract.signers.length == 0 %>
+                  <div class="signers-box">
+                    <h3><%= t('contracts.signers')%></h3>
+                    <ul class="list-group clear-list">
+                      <% contract.signers.each do |signer| %>
+                      <li class="list-group-item">
+                        <span class="pull-right">
+                          <%= status_label(signer.status) %>
+                        </span>
+                        <%= signer.name %>
+                      </li>
+                      <% end %>
+                    </ul>
+                  </div>
+                <% end %>
+
+                <div class="message-box">
+                  <h3><%= t('contracts.id')%></h3>
+                  <%= contract.slug %>
+                </div>
+
+                <div class="row">
+                    <div class="pdf-contract-box">
+                    <% unless contract.url.nil? %>
+                      <div class="col-sm-5 pull-left">
+                        <%= link_to contract.url, title: "Pdf", target: "_blank", class: "btn btn-primary btn-sm" do %>
+                          <i class="fa fa-file-pdf-o"></i><%= t('contracts.download_it')%>
+                        <% end %>
+                      </div>
+                    <% end %>
+                      <div class="col-sm-5 pull-right" style="margin-top: 28px;">
+                        <%unless contract.signed? %>
+                          <%= link_to contract_request_signature_path(contract), {class: "btn btn-info btn-sm btn-block"} do %>
+                            <i class="fa fa-pencil-square-o"></i><%= t('contracts.sign_it')%>
+                          <% end %>
+                        <%end%>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

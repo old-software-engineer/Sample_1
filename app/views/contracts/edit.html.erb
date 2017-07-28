@@ -1,0 +1,50 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2><%= t('contracts.edit_contract')%></h2>
+    <ol class="breadcrumb">
+        <li>
+            <%= link_to t(:home), account_contracts_path(@account) %>
+        </li>
+        <li>
+            <%= link_to t('contracts_label') , account_contracts_path(@account) %>
+        </li>
+        <li class="active">
+            <strong><%= @contract.title %></strong>
+        </li>
+    </ol>
+  </div>
+</div>
+<div class="wrapper wrapper-content clearfix">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#form" data-toggle="tab"><i class="fa fa-edit"></i> <%= t('contracts.edit_label')%></a></li>
+    <%unless @contract.draft?%>
+      <li><a href="#preview" data-toggle="tab" id="template-contract"><i class="fa fa-eye"></i> <%= t('contracts.preview_label')%></a></li>
+    <%else%>
+      <li><a href="#edit-content" data-toggle="tab" id="edit-contract" data-url="<%= contract_editor_content_path(@contract) %>"><i class="fa fa-edit"></i> <%= t('contracts.content_label')%></a></li>
+    <%end%>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="form">
+      <div id="contract-form-box" style="padding-top: 0px">
+        <%= render 'form' %>
+      </div>
+    </div>
+    <% unless @contract.draft? %>
+      <div class="tab-pane" id="preview">
+        <div id="contract-preview-box">
+          <iframe id="preview-frame" src="<%= contract_preview_path(@contract) %>" frameborder="0"></iframe>
+        </div>
+      </div>
+    <% else %>
+      <div class="tab-pane" id="edit-content">
+        <div id="contract-editor-box">
+          <!-- populated with ajax-->
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+<script src="//cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>

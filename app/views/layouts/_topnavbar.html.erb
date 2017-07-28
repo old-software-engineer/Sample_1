@@ -1,0 +1,12 @@
+<!-- DESKTOP -->
+<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+  <ul class="nav navbar-nav">
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+      <li>
+        <%= link_to destroy_user_session_path, method: "delete" do %>
+          <i class="fa fa-sign-out"></i> <%= t(:logout) %>
+        <% end %>
+      </li>
+  </ul>
+</nav>

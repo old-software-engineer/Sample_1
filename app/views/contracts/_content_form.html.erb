@@ -1,0 +1,25 @@
+<div class="wrapper wrapper-content animated fadeInRight">
+  <%= form_for @contract, url: @url, html: {:class => "form-horizontal"} do |f| %>
+    <textarea name="contract[content]" id="content-editor"><%= @html%></textarea>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <div class="pull-right">
+          <%= f.submit t('save_changes'), class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  <%end%>
+</div>
+
+<script>
+  var simplemde = new SimpleMDE({
+    element: $("#content-editor")[0],
+    autofocus: true,
+    autosave: {
+      enabled: true,
+      delay: 5000,
+      unique_id: 'content-editor' + '<%= @url %>'
+    }
+  });
+  simplemde.render();
+</script>

@@ -1,0 +1,61 @@
+<p id="notice"><%= notice %></p>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2><%= t('accounts.sign_me_accounts')%></h2>
+    <ol class="breadcrumb">
+        <li>
+            <a href="/">t('home_label)</a>
+        </li>
+        <li class="active">
+            <strong><%= t('accounts.sign_me_accounts')%></strong>
+        </li>
+    </ol>
+  </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight clearfix">
+  <div class="col-lg-12">
+    <div class="ibox float-e-margins">
+      <div class="ibox-title">
+        <%= t('accounts.signme_users')%>
+        <div class="ibox-tools">
+          <%= link_to t('accounts.new_account'), new_account_path, class: "btn btn-primary btn-xs" %>
+        </div>
+      </div>
+      <div class="ibox-content">
+        <table class="table">
+          <thead>
+            <tr>
+              <th><%= t('username_label')%></th>
+              <th><%= t('email_label')%></th>
+              <th><%= t('type_label')%></th>
+              <th colspan="2"><%= t('action_label').capitalize %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @accounts.each do |account| %>
+              <tr>
+                <td>
+                  <%= link_to account.username, "#" %>
+                </td>
+                  <td>
+                  <%= account.isAdmin_formatted? %>
+                </td>
+                <td><%= account.email %></td>
+                <td>
+                  <%= link_to edit_account_path(account), title: t('edit_label') do %>
+                    <i class="fa fa-pencil-square-o"></i>
+                  <% end %>
+                </td>
+                <td>
+                  <%= link_to account_path(account.user), method: :delete, data: { confirm: t('sure_message') } do %>
+                    <i class="fa fa-times"></i>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The page you were looking for doesn't exist (404)</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= stylesheet_link_tag 'admin', media: 'all' %>
+  </head>
+  <body class="gray-bg">
+    <div class="middle-box text-center animated fadeInDown">
+      <h3>There is no active account in this address</h3>
+      <h3 class="font-bold">
+        <%= link_to "Sign in", send("#{model_name}_new_user_session_path") %> to access your account
+      </h3>
+    </div>
+  </body>
+</html>
+
+
+﻿

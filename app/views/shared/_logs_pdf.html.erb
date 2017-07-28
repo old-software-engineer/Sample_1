@@ -1,0 +1,82 @@
+<% unless @contract.logs.nil? || @contract.logs.count == 0 %>
+  <hr class="separator">
+  <div class="row">
+    <table class="document-info table">
+      <tr>
+        <td class="title"><strong>Title</strong></td>
+        <td><%= @contract.title %></td>
+      </tr>
+      <tr>
+        <td class="title"><strong>Document ID</strong></td>
+        <td><%= @contract.slug %></td>
+      </tr>
+      <tr>
+        <td class="title"><strong>by</strong></td>
+        <td><%= @contract.owner.username %></td>
+      </tr>
+            <tr>
+        <td class="title"><strong>created at </strong></td>
+        <td><%= @contract.created_at %></td>
+      </tr
+            <tr>
+        <td class="title"><strong>Status</strong></td>
+        <td><%= @contract.status.humanize unless @contract.status.nil? %></td>
+      </tr
+    </table>
+    <hr class="separator">
+    <br><br>
+    <h3>Document History</h3>
+    <br>
+    <table class="table document-history">
+      <% @contract.logs.each do |log| %>
+      <tr>
+        <td class="status">
+        <%=
+            unless log.status.nil?
+              case log.status.to_sym
+                when :viewed
+                  image_tag("http://s3.amazonaws.com/re.lobo.production/images/viewed.png")
+                when :sent
+                  image_tag("http://s3.amazonaws.com/re.lobo.production/images/sent.png")
+                when :request_code
+                  image_tag("http://s3.amazonaws.com/re.lobo.production/images/request.png")
+                when :signed
+                  image_tag("http://s3.amazonaws.com/re.lobo.production/images/signed.png")
+              end
+            end
+        %>
+          <br>
+          <span><%= log.status.humanize unless log.status.nil? %></span>
+        </td>
+        <td class="date">
+          <p><%= log.created_at.strftime("%d/%m/%y") %></p>
+          <p><%= log.created_at.strftime("%H:%M:%S") %> UTC</p>
+        </td>
+        <td class="desc">
+          <p>
+          <%=
+              unless log.status.nil?
+                case log.status.to_sym
+                  when :viewed
+                     raw "Viewed by "
+                  when :sent
+                     raw "Sent for signature to "
+                  when :request_code
+                    raw "Request code by "
+                  when :signed
+                    raw "Signed by "
+                  when :downloaded
+                    raw "Downloaded by "
+                end
+              end
+
+          %>
+          <%= log.signer.name %> (<%= log.signer.email %>)
+          </p>
+          <p>IP: <%= log.ip %></p>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+<% end %>

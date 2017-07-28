@@ -1,0 +1,117 @@
+<% unless @contract.logs.nil? || @contract.logs.count == 0 %>
+
+<hr class="separator">
+
+<div class="document-info">
+  <div class="row">
+    <div class="col-sm-4 title">
+      <%= t("log.title")%>
+    </div>
+
+    <div class="col-sm-8">
+      <%= @contract.title %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4 title">
+      <%= t("log.id")%>
+    </div>
+    
+    <div class="col-sm-8">
+      <%= @contract.slug %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4 title">
+      <%= t("log.by")%>
+    </div>
+    
+    <div class="col-sm-8">
+      <%= @contract.owner.username %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4 title">
+      <%= t("log.created_at")%>
+    </div>
+    
+    <div class="col-sm-8">
+      <%= @contract.created_at %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4 title">
+      <%= t("log.status")%>
+    </div>
+    
+    <div class="col-sm-8">
+      <%= t("log.#{@contract.status.humanize.downcase}") unless @contract.status.nil? %>
+    </div>
+  </div>
+</div>
+
+<div class="document-history">
+  <% @contract.logs.each do |log| %>
+
+    <div class="row">
+      <div class="col-sm-2 status">
+        <div class="hide-on-mobile">
+          <%=
+            unless log.status.nil?
+              case log.status.to_sym
+                when :viewed
+                  image_tag("https://s3.amazonaws.com/re.lobo.production/images/viewed.png")
+                when :sent
+                  image_tag("https://s3.amazonaws.com/re.lobo.production/images/sent.png")
+                when :request_code
+                  image_tag("https://s3.amazonaws.com/re.lobo.production/images/request.png")
+                when :signed
+                  image_tag("https://s3.amazonaws.com/re.lobo.production/images/signed.png")
+              end
+            end
+          %>
+        </div>
+
+        <div class="text">
+          <%= t("log.#{log.status.humanize.downcase}") unless log.status.nil? %>
+        </div>
+      </div>
+
+      <div class="col-sm-4 date">
+        <div><%= log.created_at.strftime("%d/%m/%y") %></div>
+        <div><%= log.created_at.strftime("%H:%M:%S") %> UTC</div>
+      </div>
+
+      <div class="col-sm-6 desc">
+        <div>
+          <%=
+              unless log.status.nil?
+                case log.status.to_sym
+                  when :viewed
+                     raw "#{t(:log_contract_viewed)} "
+                  when :sent
+                     raw "#{t(:log_contract_sent)} "
+                  when :request_code
+                    raw "#{t(:log_contract_request_code)} "
+                  when :signed
+                    raw "#{t(:log_contract_signed)}"
+                  when :downloaded
+                    raw "#{t(:log_downloaded_by)}"
+                end
+              end
+
+          %>
+          <%= log.signer.name %> (<%= log.signer.email %>)
+        </div>
+        <div>IP: <%= log.ip %></div>
+      </div>
+    </div>
+
+  <% end %>
+</div>
+
+<% end %>

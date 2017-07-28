@@ -1,0 +1,738 @@
+en:
+  accounts:
+    already_logged_id: already logged
+    create:
+      notice: Account successfully created!
+    destroy:
+      notice: Account successfully destroyed!
+    edititng_account: Editing account
+    go_to_dashboard: Go to dashboard
+    header_message: Create a new 30-day trial Papaye account today, without a credit card
+    new_account: New Account
+    save: Save
+    select_language: Select your language...
+    sign_me_accounts: Papaye accounts
+    signme_users: Papaye users
+    start_trial: Start my free 30-day trial
+    update:
+      notice: Account successfully updated!
+      alert:
+    request_code_call:
+      notice: request code call
+    regenerate_token:
+      notice:
+  accounts_label: Accounts
+  action_label: Actions
+  activerecord:
+    attributes:
+      signme/contract:
+        language: Language
+        message: Message
+        template: template
+        template_id: Template
+        title: Title
+      signme/contract/signers:
+        phone: phone
+      signme/template:
+        name: name
+        body: body
+        missing_curly_brackets: missing curly brackets
+      user:
+        credit_card: Credit card
+        email: Email
+        language: Language
+        username: Username
+        password: Password
+        remember_me: Remember me
+        current_password: Current password
+      doorkeeper/application:
+        scopes: Scopes
+        description: Description
+        logo: Logo
+    models:
+      signme/contract: contract
+      signme/template: template
+      user: User
+      doorkeeper/application: Application
+    errors:
+      models:
+        signme/template:
+          attributes:
+            body:
+              missing_curly_brackets: missing curly brackets
+  approved: approved
+  back_label: Back
+  baseline_html: We take care of your <strong>digital presence</strong> while <strong>you take care of running your business.</strong>
+  by: by
+  cancel_label: Cancel
+  canceled: canceled
+  change: Change
+  company_name: Company Name
+  complete: complete
+  confirm_delete: Are you sure you want to permanently delete this document? We will be unable to retrieve this file after it has been deleted. If you wish to keep a copy of it, we suggest you download it first.
+  contact_us: contact us
+  contract: Contract
+  contract_label: Contract
+  contracts:
+    add_contract: Add Contract
+    add_new_contract: Add new Contract
+    add_new_template: Add new Template
+    add_signers: Add Signatory
+    agree_label: I Agree
+    contacts_label: Contracts
+    content_label: Content
+    contract_fields: Contract fields
+    create:
+      notice: Contract was successfully created.
+    destroy:
+      notice: Contract was successfully destroyed.
+    download_it: Download
+    edit_contract: Edit Contract
+    edit_label: Edit
+    new_label: contracts
+    email_example: email@example.com
+    id: id
+    latest_contracts: Latest Contracts
+    new_contract: New Contract
+    no_fields: Template has no fields.
+    option_call: or we can make a call
+    option_text: Text Me
+    phone_label: Phone
+    preview_label: Preview
+    recieve_code: You will receive a code
+    request_code:
+      notice: Message was sent.
+    request_code_call:
+      notice: Call made
+    request_signature:
+      notice: Signature request sent.
+    request_signature_label: Request signature
+    save_preview: Save contract for preview.
+    select_template: Select template
+    send_new_code: Send me a new code
+    sign_it: Contracts
+    signed_success: All done! Shortly, You will receive an email notification, with a link to download your copy of the contract. If there are other remaining parties that must sign the contract, you will receive the link once all parties to the contract have signed.
+    signers: Signers
+    signers_label: Signatories
+    signers_name: Name of Signatory
+    update:
+      notice: Contract was successfully updated.
+    verify_code: Please enter your verification code
+  contracts_label: Contracts
+  date:
+    abbr_day_names:
+    - Sun
+    - Mon
+    - Tue
+    - Wed
+    - Thu
+    - Fri
+    - Sat
+    abbr_month_names:
+    -
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Oct
+    - Nov
+    - Dec
+    day_names:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    formats:
+      default: "%d/%m/%Y"
+      long: "%B %d, %Y"
+      short: "%b %d"
+    month_names:
+    -
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+    order:
+    - :year
+    - :month
+    - :day
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: about 1 hour
+        other: about %{count} hours
+      about_x_months:
+        one: about 1 month
+        other: about %{count} months
+      about_x_years:
+        one: about 1 year
+        other: about %{count} years
+      almost_x_years:
+        one: almost 1 year
+        other: almost %{count} years
+      half_a_minute: half a minute
+      less_than_x_minutes:
+        one: less than a minute
+        other: less than %{count} minutes
+      less_than_x_seconds:
+        one: less than 1 second
+        other: less than %{count} seconds
+      over_x_years:
+        one: over 1 year
+        other: over %{count} years
+      x_days:
+        one: 1 day
+        other: "%{count} days"
+      x_minutes:
+        one: 1 minute
+        other: "%{count} minutes"
+      x_months:
+        one: 1 month
+        other: "%{count} months"
+      x_seconds:
+        one: 1 second
+        other: "%{count} seconds"
+    prompts:
+      day: Day
+      hour: Hour
+      minute: Minute
+      month: Month
+      second: Seconds
+      year: Year
+  decline: decline
+  declined: déclined
+  delete_label: Delete
+  devise:
+    confirmation:
+      title: Resend confirmation instructions
+    confirmations:
+      confirmed: Your email address has been successfully confirmed.
+      send_instructions: You will receive an email notification with instructions on how to confirm your email address, in a few minutes.
+      send_paranoid_instructions: If your email address exists in our database, you will receive an email with instructions on how to confirm your email address in a few minutes.
+    failure:
+      already_authenticated: You are already signed in.
+      inactive: Your account is not yet activated.
+      invalid: Invalid %{authentication_keys} or password.
+      last_attempt: You have one more attempt before your account is locked.
+      locked: Your account is locked.
+      not_found_in_database: Invalid %{authentication_keys} or password.
+      timeout: Your session expired. Please sign in again to continue.
+      unauthenticated: You need to sign in or sign up before continuing.
+      unconfirmed: You need to confirm your email address before continuing.
+    forget_password_link_label: Forgot your password?
+    mailer:
+      confirmation_instructions:
+        link: Confirm my account
+        message_1: You can confirm your account email through the link below
+        subject: Confirmation instructions
+      reset_password_instructions:
+        api_user_subject: Reset password instruction
+        message: 'Someone has requested a link to change your password. You can do this through the link below.
+
+'
+        message_2: If you didn't request this, please ignore this email
+        message_3: 'If you want to reset your password, just click the following link:'
+        subject: Reset password instructions
+        user_subject: Reset password instructions
+      unlock_instructions:
+        link: Unlock my account
+        message_1: Your account has been locked due to an excessive number of unsuccessful sign in attempts.
+        message_2: Click the link below to unlock your account
+        subject: Unlock instructions
+    no_confirmation_link_label: Didn't receive confirmation instructions?
+    no_unlock_link_label: Didn't receive unlock instructions?
+    omniauth_callbacks:
+      failure: Could not authenticate you from %{kind} because "%{reason}".
+      success: Successfully authenticated from %{kind} account.
+    passwords:
+      button_label: 'Change my password
+
+'
+      no_token: You cannot access this page because it does not originate from a password-reset email notification. If you did receive password-reset email notification, please make sure you use the full URL provided.
+      password_confirmation_label: Confirm new password
+      password_label: New Password
+      send_instructions: You will receive an email notification with instructions on how to reset your password, in a few minutes.
+      send_paranoid_instructions: If your email address exists in our database, you will receive a password recovery link at your email address, in a few minutes.
+      title: Change your password
+      updated: Your password has been changed successfully. You are now signed-in.
+      updated_not_active: Your password has been changed successfully.
+    registration:
+      edit:
+        message_1: Currently waiting confirmation for
+        message_blank: leave blank if you don't want to change it
+        message_confirmation_password: we need your current password to confirm your changes
+        title: Edit profile
+      new:
+        message_already_have_account: Already have an account?
+        title: Register to
+    registrations:
+      destroyed: Bye! Your account has been successfully cancelled. We hope to see you again soon.
+      signed_up: Welcome! You have signed up successfully.
+      signed_up_but_inactive: You have signed up successfully. However, we could not sign you in because your account is not yet activated.
+      signed_up_but_locked: You have signed up successfully. However, we could not sign you in because your account is locked.
+      signed_up_but_unconfirmed: A message with a confirmation link has been sent to your email address. Please follow the link to activate your account.
+      update_needs_confirmation: You updated your account successfully, but we need to verify your new email address. Please check your email and follow the confirm link to confirm your new email address.
+      updated: Your account has been updated successfully.
+    sessions:
+      already_signed_out: Signed out successfully.
+      signed_in: Signed in successfully.
+      signed_out: Signed out successfully.
+    sign_in_with_label: Sign in with
+    unlock:
+      title: Resend unlock instructions
+    unlocks:
+      send_instructions: You will receive an email with instructions for how to unlock your account in a few minutes.
+      send_paranoid_instructions: If your account exists, you will receive an email with instructions for how to unlock it in a few minutes.
+      unlocked: Your account has been unlocked successfully. Please sign in to continue.
+  draft: draft
+  edit_label: Edit
+  edit_my_identity: Edit my Profile
+  edit_user_label: Edit User
+  email: email
+  email_label: Email
+  errors:
+    change_unauthorized: Maybe you tried to change something you did not have access to.
+    check_logs: If you are the application owner check the logs for more information.
+    contract_unauthorized: Sorry, this contract is not in your account!
+    error_404: The page you were looking for doesn't exist (404)
+    error_422: The change you wanted was rejected (422)
+    error_505: We're sorry, but something went wrong (500)
+    format: "%{attribute} %{message}"
+    go_main_page: 'You can go back to main page:'
+    internal_server_error: Internal Server Error
+    messages:
+      accepted: must be accepted
+      already_confirmed: was already confirmed, please try signing in
+      blank: cannot be blank
+      confirmation: does not match %{attribute}
+      confirmation_period_expired: needs to be confirmed within %{period}, please request a new one
+      empty: cannot be empty
+      equal_to: must be equal to %{count}
+      even: must be even
+      exclusion: is reserved
+      expired: has expired, please request a new one
+      greater_than: must be greater than %{count}
+      greater_than_or_equal_to: must be greater than or equal to %{count}
+      inclusion: is not included in the list
+      invalid: is invalid
+      less_than: must be less than %{count}
+      less_than_or_equal_to: must be less than or equal to %{count}
+      not_a_number: is not a number
+      not_an_integer: must be an integer
+      not_found: not found
+      not_locked: was not locked
+      not_saved:
+        one: Oops! It seems there is a problem!
+        other: Oops! It seems there is a problem!
+      odd: must be odd
+      other_than: must be other than %{count}
+      present: must be blank
+      record_invalid: 'Validation failed: %{errors}'
+      restrict_dependent_destroy:
+        many: Cannot delete record because dependent %{record} exist
+        one: Cannot delete record because a dependent %{record} exists
+      taken: has already been taken
+      too_long:
+        one: is too long (maximum is 1 character)
+        other: is too long (maximum is %{count} characters)
+      too_short:
+        one: is too short (minimum is 1 character)
+        other: is too short (minimum is %{count} characters)
+      wrong_length:
+        one: is the wrong length (should be 1 character)
+        other: is the wrong length (should be %{count} characters)
+    mistyped_moved: You may have mistyped the address or the page may have moved.
+    not_exist: The page you were looking for does not exist.
+    page_not_found: Page Not Found
+    rejected_message: The change you wanted was rejected.
+    template:
+      body: 'There were problems with the following fields:'
+      header:
+        one: 1 error prohibited this %{model} from being saved
+        other: "%{count} errors prohibited this %{model} from being saved"
+    unexpected_text: The server encountered something unexpected that did not allow it to complete the request. We apologize.
+  exisitng_account_label: Hold on! It looks like you already use Proactive, or have an account with another product such as Jobo, Goyava or Signme
+  forgot_password_label: forgot password?
+  full_name: Your full name
+  help_label: Help
+  helpers:
+    label:
+      signme_contract:
+        language: Language
+        message: Message
+        template_id: Template
+        title: Contract
+      user:
+        credit_card: credit card
+        email: email
+        language: language
+        username: username
+        avatar: avatar
+        Company: company
+        current_password: current password
+        First_name: first name
+        Last_name: last name
+        password: password
+        remember_me: remember me
+        Phone_number: phone number
+        Web_address: web address
+      doorkeeper_application:
+        name:
+        redirect_uri:
+        scopes:
+        description:
+        logo:
+    select:
+      prompt: Please select
+    submit:
+      create: Create %{model}
+      submit: Save %{model}
+      update: Update %{model}
+  hi: Hi
+  home: home
+  home_label: Home
+  invoices:
+    create:
+      notice: Invoice was successfully created.
+    destroy:
+      notice: Invoice was successfully destroyed.
+    update:
+      notice: Invoice was successfully updated.
+  languages:
+    en: English
+    en_CA: English - CANADA
+    en_GB: English - United Kingdom
+    es: Spanish
+    fr: French
+    fr_CA: FRENCH - CANADA
+  log:
+    by: By
+    created_at: created at
+    document_history: Document History
+    document_id: DOCUMENT ID
+    draft: draft
+    id: id
+    request code: Request Code
+    sent: sent
+    signed: signed
+    status: Status
+    title: Title
+    unsigned: unsigned
+    viewed: viewed
+  log_ viewed: Contract viewed by
+  log_contract_downloaded: Downloaded by
+  log_contract_request_code: Request code by
+  log_contract_sent: Sent for signature to
+  log_contract_signed: Signed by
+  log_contract_viewed: 'Viewed by '
+  log_downloaded: Contract downloaded by
+  log_out: Log out
+  log_request_code: Request code to
+  log_sent: Request signature from
+  log_signed: Contract signed by
+  log_viewed: Viewed
+  login: Login
+  login_label: Log in
+  login_button: Log in with my Proactives account
+  logout: log out
+  minimun_characters: characters minimum
+  name_label: Name
+  number:
+    currency:
+      format:
+        delimiter: ","
+        format: "%u%n"
+        precision: 2
+        separator: "."
+        significant: false
+        strip_insignificant_zeros: false
+        unit: "$"
+    format:
+      delimiter: ","
+      precision: 3
+      separator: "."
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: Billion
+          million: Million
+          quadrillion: Quadrillion
+          thousand: Thousand
+          trillion: Trillion
+      format:
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        format: "%n%"
+  packages:
+    create:
+      notice: Package was successfully created.
+    destroy:
+      notice: Package was successfully destroyed.
+    update:
+      notice: Package was successfully updated.
+  password_label: Password
+  passwords:
+    button: Send me reset password instructions
+    message: Enter your email address below and we'll send you password reset instructions.
+    message_spam: If you don't get an email from us within a few minutes please be sure to check your spam folder.
+    message_sender: The email will be coming from do-not-reply@proactive.services.
+    title: Can't sign in?
+  pending: pending
+  prohibition_saved: 'prohibited this %{type} from being saved:'
+  quick_actions: Quick Actions
+  register_label: Register
+  register_signme: Register to SignMe
+  registration_label: Registration
+  request_label: Request a signature
+  requests:
+    create:
+      notice: Request was successfully created.
+    destroy:
+      notice: Request was successfully destroyed.
+    quote_status:
+      approved: Quote was approved!
+      declined: Quote was declined!
+    update:
+      notice: Request was successfully updated.
+  save_changes: Save Changes
+  save_label: Save
+  send_code_by_text_message: Your signature code is
+  session:
+    exisitng_account_label:
+      pitaya: Hold on! It looks like you already use Pitaya, or have an account with another product such as Papaye, Goyava, Jobo or Proactive
+  sessions:
+    exisitng_account_label:
+      jobo: Hold on! It looks like you already use Jobo, or have an account with another product such as PaPaye, Goyava or Proactive
+      papaye: Hold on! It looks like you already use Papaye, or have an account with another product such as Jobo, Goyava or Proactive
+    title: Sign in to
+  settings_label: Settings
+  show_label: Show
+  sign_label: Sign
+  signed: signed
+  signer:
+    call_me: Call Me
+    calling: Calling
+    error_account_not_authorized: Account not authorized to call
+    error_call: Sorry the call cant be made to your number.
+    error_js_dialog: Something went wrong.
+    incorrect_code: Incorrect code
+    more_attempts_left: more attempts left
+    sign: Sign
+    signing: Signing
+    texting: Texting
+  signer_notifier:
+    contract: Contract
+    contract_status_owner:
+      hi: Hi
+      signed_by: was signed by
+      signed_someone: "%{signer} has signed  %{contract} "
+      subject: Signature status for
+      your_contract: Your contract
+    contract_status_signers:
+      link_contract: Here is the link for the Contract
+      signed_all: was signed by all Signatories!
+      subject: 'Signature status for '
+    download_pdf: Download PDF
+    send_contract_viewed:
+      subject: 'Contract viewed '
+    send_email_request_signature:
+      from: From
+      sign_contract: sign the contract
+      subject: Signature Requested by
+      view_contract: View Contract
+    send_password:
+      password_generated: Your generated password is
+      subject: Account registered
+    send_pdf_signer:
+      follow_link: Follow this link to donwload the contract
+    trial_end:
+      end_date: Your 30-day free trial is coming to a close. It officially ends on
+      expiry_message: Do not let your trial expire!
+      friendly_reminder: Just a friendly reminder that your free 30-day trial ends in a few days.
+      reminder: Reminder
+      subscribe_now: Subscribe now
+    trial_start:
+      begin_trial: Thanks for beginning your 30-day free trial of
+      enjoy_oppurtunity: We hope you enjoy this opportunity to take
+      login_email: Login Email
+      message_continue: for a spin. Feel free to kick the tires and get acquainted with no limits and no obligation during your free trial.
+      sign_account: 'Sign in to your account:'
+      welcome_message: Welcome to your 30-day free trial of
+    warning: 'Warning: Do not forward this message to others or else they will be able to access your document.'
+  signup_label: Sign up
+  signup_button: Sign up for a Proactives account
+  signup_disclaimer: By creating a Proactives account, you will be able to access all apps inside the Proactives suite (Goyava, Jobo, Papaye).
+  subscriptions:
+    cancel:
+      notice: Your subscription was canceled.
+    create:
+      notice: Your subscription was successfully created.
+  succeeded: succeeded
+  support:
+    array:
+      last_word_connector: ", and "
+      two_words_connector: " and "
+      words_connector: ", "
+  sure_message: Are you sure?
+  templates:
+    add_template: Add Template
+    create:
+      notice: Template was successfully created.
+    destroy:
+      notice: Template was successfully destroyed.
+    edit_template: Edit Template
+    key_label: KEY
+    new_template: New Template
+    template_fields: Template fields
+    templates_label: Templates
+    update:
+      notice: Template was successfully updated.
+    validate_keys:
+      extra_fields_added_warning: You added extra key(s) in fields. Please add the same in text or remove from fields to proceed!
+      extra_keys_in_text_warning: You added extra key(s) in text. Please add the same in fields or remove from text to proceed!
+  text_me: Text me
+  time:
+    am: am
+    formats:
+      default: "%d/%m/%Y %H:%M"
+      long: "%B %d, %Y %H:%M"
+      short: "%d %b %H:%M"
+    pm: pm
+  title:
+    home:
+      index: Proactives | Home Page
+    accounts:
+      edit: Edit an account
+      new: Accounts
+      create: create
+      show: show
+    contracts:
+      create: Create a new contract
+      edit: Edit a contract
+      index: Your contracts
+      new: Contracts
+      preview: Preview your contract
+      show_contract_signer: Sign the contract
+      update: Edit the contrat
+      show: show
+    dashboard:
+      index: Dashboard
+    default: Proactives - We are your own Personal IT and Strategy Team.
+    launchpad:
+      index: Launchpad
+    passwords:
+      edit: Edit your password
+      new: Forgot your password?
+      update: Edit your password
+    sessions:
+      new: Proactives - Login
+    templates:
+      create: Create a new template
+      edit: Templates
+      index: Templates
+      new: Templates
+      update: update
+    welcome:
+      index: Proactives
+    registrations:
+      edit: edit
+      create: create
+      new: registration
+      update: updatee
+    uploads:
+      new: new
+    client_passwords:
+      create: title.client_passwords.create
+      new: title.client_passwords.new
+    client_sessions:
+      new: title.client_sessions.new
+    errors:
+      not_found: not found
+    subscriptions:
+      new:
+  today: today
+  total_signed: Contract(s) signed
+  type_label: type
+  unsigned: unsigned
+  update_label: Update
+  username_label: Username
+  users:
+    create:
+      notice: "%(role) was successfully created."
+    destroy:
+      notice: User was successfully destroyed.
+    update:
+      notice: "%(role) was successfully updated."
+  viewed: Viewed
+  welcome:
+    definition_proactive_hour_html: "<span>*Maintenance</span> includes: website coding, design, updates. standard search engine optimization and social media management."
+    definition_proactive_plus_hour_html: "<span>*Maintenance</span> includes: website coding, design, updates, advanced search engine optimization and social media management."
+    first_question: All hours not used in a month are carried forward to the next.  The only condition is that you spend them before the end of the year.
+    first_question_header: What happens if i don't use all hours in a month?
+    frequently_asked_html: Frequently Asked <strong>Questions</strong>
+    management_approval: "*Months: Subject to management approval."
+    our_package_html: Our <strong>Packages</strong>
+    people_you_can_trust: People you can trust
+    people_you_can_trust_paragrah: 'We have been in business for over 7 years, we are dependable and already had serviced several agencies, startups, government and corporate clients including: Adobe Canada, Bombardier, Broadcom, Canadian Forces and Bell.'
+    proactive_description_line_one_html: 1 Anything <span>maintenance</span> hours
+    proactive_description_line_two_html: 'Additional <span>maintenance</span> %{currency} %{heure_sup}/h (instead of %{currency}129) '
+    proactive_plus_description_line_one_html: 4 Anything <span>maintenance</span> hours
+    proactive_plus_description_line_tree_html: Possibility of spreading cost of major IT projects over <span>12 months</span>
+    proactive_plus_description_line_two_html: 3 Strategic consultations per year (up to 1 hour)
+    recent_clients_html: Recent <strong>Clients</strong>
+    second_question: Our multidisciplinary team has a lot of experience in handling technical issues, which helps us resolve problems in record time.
+    second_question_header: What can you do in 1 hour?
+    send_mail:
+      notice: Thank You
+    signup_header_html: Let’s <strong>Sign Up</strong>
+    tested_approved: Tested & Approved
+    tested_approved_paragrah: Proactive is a result of many years of experience dealing with many clients of different fields, facing common problems related to today's complex and technical online ecosystem.
+    third_question_header: What's different about Proactive?
+    third_question_html: We are not selling you complicated online tools you have to learn to use or dedicate a lot of your time to learn.<br>Managing a website, updates, blogposts, facebook, twitter, pinterest, youtube, google ranking and newsletters is a lot of work. We do it for you, so you can do your business and do what you do best.
+    what_proactive: What's is Proactive?
+    what_proactive_html: What’s <span>Proactive?</span>
+    what_proactive_paragraph_html: "<p>Proactive is a solution that provides modern web master services, support and online strategy.</p><p>We take care of your digital presence (website, social media, newsletter, mobile, SEO and SMO) with a sustained and proactive approach while you take care of running your business.</p>"
+  welcome_label: Welcome
+  write_label: Write
+  go_to_dashboard: go to dashboard
+  update_back: update back
+  login_and_create_label: login and create a new account
+  dashboard:
+  doorkeeper:
+    scopes:
+      user:
+    applications:
+      show:
+        logo:

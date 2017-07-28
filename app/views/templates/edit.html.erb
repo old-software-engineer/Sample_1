@@ -1,0 +1,19 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2><%= t('templates.edit_template')%></h2>
+    <ol class="breadcrumb">
+        <li>
+            <%= link_to t('home_label'), account_templates_path(@account) %>
+        </li>
+        <li>
+            <%= link_to t('templates.templates_label'), account_templates_path(@account) %>
+        </li>
+        <li class="active">
+            <strong><%= t('templates.edit_template')%></strong>
+        </li>
+    </ol>
+  </div>
+</div>
+<div class="wrapper wrapper-content clearfix">
+  <%= render 'form' %>
+</div>

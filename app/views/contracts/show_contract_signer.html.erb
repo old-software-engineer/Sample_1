@@ -1,0 +1,428 @@
+﻿<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<style>
+   .modal-content {
+       overflow: hidden;
+   }
+
+   .modal-header .close {
+      z-index: 100;
+      position: absolute;
+      right: 15px;
+   }
+
+   .modal-header, .modal-body, .modal-footer {
+      position: relative;
+
+       -webkit-transition: all ease 1s;
+       -moz-transition: all ease 1s;
+       -ms-transition: all ease 1s;
+       -o-transition: all ease 1s;
+       transition: all ease 1s;
+   }
+
+   .step-item {
+       -webkit-transition: all ease 1s;
+       -moz-transition: all ease 1s;
+       -ms-transition: all ease 1s;
+       -o-transition: all ease 1s;
+       transition: all ease 1s;
+
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+      padding: 15px;
+   }
+
+   .to-left {
+       -webkit-transform: translateX(-100%);
+       -moz-transform: translateX(-100%);
+       -ms-transform: translateX(-100%);
+       -o-transform: translateX(-100%);
+       transform: translateX(-100%);
+   }
+
+   .to-right {
+       -webkit-transform: translateX(100%);
+       -moz-transform: translateX(100%);
+       -ms-transform: translateX(100%);
+       -o-transform: translateX(100%);
+       transform: translateX(100%);
+   }
+
+   .call_code {
+      margin-left: 55px;
+      cursor: pointer;
+   }
+
+   .verify-label {
+      text-align: center;
+      margin-bottom: 15px;
+   }
+
+   .code-error {
+      height: 20px;
+      color: darkred;
+      text-align: center;
+   }
+</style>
+
+<script>
+    $(function () {
+        var testCount = 3;
+        var code = '1111';
+
+        var setStepHeight = function (step) {
+          var height = $($('.step-item')[step - 1]).attr('data-height');
+          $('.modal-body').css('height', height);
+        };
+
+        var slideLeft = function (activeStep) {
+          $('.modal-body .step-item:nth-of-type(' + (activeStep - 1) + ')').addClass('to-left');
+          $('.modal-body .step-item:nth-of-type(' + (activeStep) + ')').removeClass('to-right');
+        };
+
+        var slideRight = function (activeStep) {
+          $('.modal-body .step-item:nth-of-type(' + (activeStep) + ')').removeClass('to-left');
+          $('.modal-body .step-item:nth-of-type(' + (activeStep + 1) + ')').addClass('to-right');
+        };
+
+        var initModal = function () {
+          // hide all steps, except first
+          $('.step-item').addClass('to-right');
+          $('.step-item:first').removeClass('to-right');
+
+          // set modal body height for first step
+          setStepHeight(1);
+
+          // bind handler for transition 1 => 2
+          $('.message_code').on('click', function () {
+            setStepHeight(2);
+            slideLeft(2);
+          });
+
+          $('.call_code').on('click', function () {
+            setStepHeight(2);
+            slideLeft(2);
+          });
+          // bind handler for transition 2 => 3
+
+          // bind handler for transition 3 => 2
+          $('.message_code_2').on('click', function () {
+            testCount = 3;
+            $('.code-error').text('');
+
+            setStepHeight(2);
+            slideRight(2);
+          });
+        };
+
+        initModal();
+    });
+</script>
+
+<% if @signer.unsigned? || @signer.viewed?  %>
+  <button class="btn btn-primary" id="agree-top-btn" data-toggle="modal" data-target="#code-request"><%= t('contracts.agree_label') %></button>
+<%end%>
+
+<div class="contract-text">
+    <p class="alert alert-success notice-p" style="display: none;">
+      <%= t('contracts.signed_success')%>
+    </p>
+
+    <% if notice %>
+      <p class="alert alert-success">
+      <%= notice %>
+      </p>
+    <% end %>
+
+    <% if alert %>
+      <p class="alert alert-danger"><%= alert %></p>
+    <% end %>
+
+    <div class="clearfix"><br></div>
+
+    <%= raw @html %>
+    <div id="logs-div"><%= render 'shared/logs' %></div>
+    <div class="clearfix"><br></div>
+
+    <div class="pull-right">
+      <% if @signer.unsigned? || @signer.viewed?  %>
+        <%= link_to t('contracts.agree_label'), '#', {class: "btn btn-success", id: "request-code-btn", "data-toggle"=>"modal", "data-target"=>"#code-request"} %>
+      <% elsif @signer.contract.url.present? %>
+        <%= link_to download_pdf_path(:signer => @signer), title: "Pdf", target: "_blank", class: "btn btn-primary btn-sm" do %>
+          <i class="fa fa-file-pdf-o"></i> <%= t('contracts.download_it')%>
+        <% end %>
+      <% end %>
+    </div>
+</div>
+
+<!-- MODAL -->
+<style>
+   .modal-content {
+       overflow: hidden;
+   }
+
+    .modal-footer{
+      margin-top: 25px;
+    }
+
+   .modal-header .close {
+      z-index: 100;
+      position: absolute;
+      right: 15px;
+   }
+
+   .modal-header, .modal-body, .modal-footer {
+      position: relative;
+
+       -webkit-transition: all ease 1s;
+       -moz-transition: all ease 1s;
+       -ms-transition: all ease 1s;
+       -o-transition: all ease 1s;
+       transition: all ease 1s;
+   }
+
+   .step-item {
+       -webkit-transition: all ease 1s;
+       -moz-transition: all ease 1s;
+       -ms-transition: all ease 1s;
+       -o-transition: all ease 1s;
+       transition: all ease 1s;
+
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+      padding: 15px;
+   }
+
+   .to-left {
+       -webkit-transform: translateX(-100%);
+       -moz-transform: translateX(-100%);
+       -ms-transform: translateX(-100%);
+       -o-transform: translateX(-100%);
+       transform: translateX(-100%);
+   }
+
+   .to-right {
+       -webkit-transform: translateX(100%);
+       -moz-transform: translateX(100%);
+       -ms-transform: translateX(100%);
+       -o-transform: translateX(100%);
+       transform: translateX(100%);
+   }
+
+   .code_call {
+      margin-left: 55px;
+      cursor: pointer;
+   }
+
+   .verify-label {
+      text-align: center;
+      margin-bottom: 15px;
+   }
+
+   .code-error {
+      height: 20px;
+      color: darkred;
+      text-align: center;
+   }
+</style>
+
+<script>
+    $(function () {
+        var testCount = 3;
+        var code = '1111';
+
+        var setStepHeight = function (step) {
+          var height = $($('.step-item')[step - 1]).attr('data-height');
+          $('.modal-body').css('height', height);
+        };
+
+        var slideLeft = function (activeStep) {
+          $('.modal-body .step-item:nth-of-type(' + (activeStep - 1) + ')').addClass('to-left');
+          $('.modal-body .step-item:nth-of-type(' + (activeStep) + ')').removeClass('to-right');
+        };
+
+        var slideRight = function (activeStep) {
+          $('.modal-body .step-item:nth-of-type(' + (activeStep) + ')').removeClass('to-left');
+          $('.modal-body .step-item:nth-of-type(' + (activeStep + 1) + ')').addClass('to-right');
+        };
+
+        var get_message_code = function(current_obj, btn){
+          $("#code").val('');
+
+          url = current_obj.data('url');
+          $.ajax({
+            type: 'get',
+            url: url,
+            success : function(response) {
+              if(btn == "code_message"){
+                setStepHeight(2);
+                slideLeft(2);
+              }
+              if(btn == 'code_message_2'){
+                $('.code-error').text('');
+                setStepHeight(2);
+                slideRight(2);
+              }
+              current_obj.html('<%= t(:text_me)%>');
+              current_obj.prop('disabled', false);
+            },
+            error : function(res) {
+              alert('<% t('signer.error_js_dialog')%>');
+              current_obj.prop('disabled', false);
+            },
+            beforeSend: function(){
+              current_obj.prop('disabled', true);
+              current_obj.html('<% t('signer.texting') %>')
+            }
+          });
+        };
+
+        var initModal = function () {
+          // hide all steps, except first
+          $('.step-item').addClass('to-right');
+          $('.step-item:first').removeClass('to-right');
+
+          // set modal body height for first step
+          setStepHeight(1);
+
+          // bind handler for transition 2 => 3
+          $('.sign-button').on('click', function (e) {
+            e.preventDefault();
+            current_obj = $(this);
+            form = $(".signin_form:visible");
+            url = form.attr('action');
+            data = form.serialize();
+
+            $.ajax({
+              type: 'post',
+              url: url,
+              data: data,
+              success : function(response) {
+                if (response.signed) {
+                  $('#code-request').modal('hide');
+                  $('.notice-p').show();
+                  $('#request-code-btn').hide();
+                  $("#agree-top-btn").hide();
+                  $(".modal-backdrop").remove();
+                  $("#logs-div").html(response.html);
+                  $(document).scrollTop(0);
+                }
+                else{
+                  if (response.expired) {
+                    setStepHeight(3);
+                    slideLeft(3);
+                  }
+                  else {
+                    $('.code-error').text('<%= t('signer.incorrect_code')%>: ' + response.count + ' <%= t('signer.more_attempts_left')%>');
+                  }
+                  current_obj.html('<%=t('signer.sign')%>');
+                }
+
+                current_obj.prop('disabled', false);
+              },
+              error : function(res) {
+                alert("#{t('signer.error_js_dialog')}");
+                current_obj.prop('disabled', false);
+              },
+              beforeSend: function(){
+               current_obj.prop('disabled', true);
+               current_obj.html('<%=t('signer.sign')%>');
+              }
+            });
+          });
+
+          // bind handler for transition 3 => 2
+          $('.code_message_2').on('click', function () {
+            get_message_code($(this), 'code_message_2')
+          });
+        };
+
+    initModal();
+
+    $(document).on('click', '.code_message',function send_message(e){
+      e.preventDefault();
+      get_message_code($(this), 'code_message')
+    });
+
+    $(document).on('click', '.code_call',function send_message(e){
+      e.preventDefault();
+      $("#code").val('');
+      current_obj = $(this);
+      url = current_obj.data('url');
+      $.ajax({
+        type: 'get',
+        url: url,
+        success : function(response) {
+          setStepHeight(2);
+          slideLeft(2);
+          $('.code_call').html("#{t('call_me')")
+        },
+        error : function(res) {
+          if (res.responseText.indexOf("Account not authorized to call") != -1)
+           {
+             alert('<%=t('signer.error_call')%>');
+          }
+          else
+            alert('<%=t('signer.error_js_dialog')%>')
+        },
+        beforeSend: function(){
+          $('.code_call').html("#{t('signer.calling')}")
+        }
+      });
+    });
+  });
+</script>
+
+<div class="modal" id="code-request" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="height: 50px">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+              <div class="step-item" data-height="110px">
+                <div>
+                  <%= t('contracts.recieve_code')%><br/>
+                  <a class="code_call"  style="display:<%= callIsValid(@signer.dial_code)%>"
+
+data-url= "<%= request_code_call_path(@signer, :subdomain => 'signme')%>"><%= t('contracts.option_call')%></a>
+                </div>
+                <div>
+                  <button class="btn btn-primary code_message pull-right" data-url="<%= request_code_path(@signer, :subdomain => 'signme') %>"><%= t('contracts.option_text')%></button>
+                </div>
+              </div>
+              <div class="step-item" data-height="170px">
+                <div class="verify-label">
+                  <%= t('contracts.verify_code')%>
+                </div>
+                <%= form_tag(sign_contract_url(@signer), method: :post, class: "form-horizontal signin_form") do %>
+                  <div class="form-group row">
+                    <div class="col-sm-4 col-sm-offset-4 col-xs-12">
+                      <input type="number" class="form-control" id="code" name="sign[code]">
+                    </div>
+                  </div>
+                <%end%>
+                <div class="code-error"></div>
+                <div>
+                  <button class="btn btn-primary sign-button pull-right"><%= t('sign_label')%></button>
+                </div>
+              </div>
+              <div class="step-item" data-height="90px">
+                <div>
+                  <%= t('contracts.send_new_code')%>
+                </div>
+                <div>
+                  <button class="btn btn-primary code_message_2 pull-right" data-url="<%= request_code_path(@signer, :subdomain => 'signme') %>"><%= t('contracts.option_text')%></button>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

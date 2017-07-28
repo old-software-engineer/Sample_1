@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1 style="color: #000; font-size: 18px; font-weight: bold; margin: 0 0 10px;"><%= t('contract_label') %> : <%= @contract.title %></h1>
+    <p style="color: #000; font-size: 14px; line-height: 1.4em; margin: 10px 0;">
+      <span style="color: #8c8c8c;"><%= t('signer_notifier.send_email_request_signature.from')%>: <%= @owner.username %> (<%= @owner.email %>)</span>
+    </p>
+    <hr style="background-color: #cccccc; border: medium none; color: #cccccc; height: 1px;">
+    <p style="color: #000; font-size: 14px; line-height: 1.4em; margin: 10px 0;">
+        <%= "#{t('signer_notifier.contract')} #{@contract.title} #{t('signer_notifier.contract_status_signers.signed_all')}" %>
+        <br>
+        <!-- liste -->
+        <ul>
+        <% @contract.logs.where(status:3).each  do |log| %>
+          <li><%= log.signer.name %> - <%= log.created_at.strftime("%H:%M:%S") %> UTC</li>
+        <% end %>
+        </ul>
+    </p>
+  </body>
+</html>

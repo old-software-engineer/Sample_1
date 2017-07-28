@@ -1,0 +1,29 @@
+<li class="<%= is_active_controller('accounts') %>">
+  <%= link_to account_path(@account) do %>
+    <i class="fa fa-pie-chart"></i><span class="nav-label">Dashboard</span>
+  <% end %>
+</li>
+<li class="<%= is_active_controller('contracts') %>">
+    <%= link_to account_contracts_path(@account) do %>
+        <i class="fa fa-edit"></i>
+        <span class="nav-label"><%= t(:contracts_label) %></span>
+    <% end %>
+</li>
+<li class="<%= is_active_controller('templates') %>">
+    <%= link_to account_templates_path(@account) do %>
+        <i class="fa fa-book"></i>
+        <span class="nav-label"><%= t('templates.templates_label') %></span>
+    <% end %>
+</li>
+  <li class="<%= is_active_controller('accounts') %>">
+    <%= link_to edit_account_path(@account) do %>
+        <i class="fa fa-book"></i>
+        <span class="nav-label"><%= t(:settings_label)%></span>
+    <% end %>
+</li>
+ <li class="<%= is_active_controller('accounts') %>">
+    <%= link_to edit_account_path(@account) do %>
+        <i class="fa fa-book"></i>
+        <span class="nav-label"><%= t(:help_label)%></span>
+    <% end %>
+</li>

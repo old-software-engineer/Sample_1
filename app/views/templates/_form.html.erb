@@ -1,0 +1,623 @@
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+
+<%= form_for @template, url: url, html: {:class => "form-horizontal"} do |f| %>
+  <% if @template.errors.any? %>
+    <div class="row">
+      <div id="error_explanation" class="alert alert-danger col-sm-6 col-sm-offset-2">
+        <h2><%= "#{pluralize(@template.errors.count, 'error')} #{t(:prohibition_saved, type: 'template')}" %> </h2>
+
+        <ul>
+          <% @template.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="ibox">
+          <div class="ibox-content">
+            <div class="form-group">
+              <div class="col-sm-8">
+                <%= f.text_field :name, class: "form-control", placeholder: t('name_label') %>
+              </div>
+              <%= f.hidden_field :account_id %>
+            </div>
+            <div class="template-editor">
+              <ul class="nav nav-tabs">
+                  <li class="active"><a href="#tab-1" data-toggle="tab"><i class="fa fa-user"></i> <t%= ('write_label')%></a></li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane active" id="tab-1">
+                  <%= f.text_area :body, cols: "30", rows: "10", class: "form-control", id: "template-body", autocapitalize: "off" %>
+                </div>
+                <div class="tab-pane" id="tab-2">
+                  <div id="preview-box">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="sticky-1" class="col-sm-4">
+        <div class="ibox">
+          <div class="fields-container">
+            <div class="ibox-title">
+              <h2>
+                <div class="pull-right">
+                  <%= button_tag t('cancel_label'), class: "btn btn-sm btn-default edit-button", type: "button", id: "cancel-field-controls" %>
+                  <%= button_tag t('save_label'), class: "btn btn-sm btn-primary edit-button", type: "button", id: "save-field-controls" %>
+                  <%= button_tag t('edit_label'), class: "btn btn-sm btn-info edit-button", type: "button", id: "show-field-controls" %>
+                </div>
+                <%= t('templates.template_fields')%>
+              </h2>
+            </div>
+            <div class="ibox-content" style="max-height: 466px; overflow-y: auto;">
+              <div class="fields-box">
+                <% fields_count = @template.fields.count %>
+                <%= f.fields_for :fields do |field| %>
+                  <% if field.object.new_record? %>
+                    <div class="field-item clearfix" id="add-field-item">
+                      <div class="col-sm-12">
+                        <%= text_field_tag "template[fields_attributes][#{fields_count}][key]", nil, {placeholder: t('templates.key_label'), class: "form-control field-key"} %>
+                      </div>
+                      <div class="field-controls">
+                        <a href="#" id="new-field"><i class="fa fa-plus"></i></a>
+                      </div>
+                      <%= field.hidden_field :template_id %>
+                    </div>
+                  <% else %>
+                  <div class="field-item clearfix">
+                    <div class="col-sm-12">
+                      <%= field.text_field :key, {placeholder: t('templates.key_label'), readonly: true, class: "form-control field-key"} %>
+                    </div>
+                    <div class="field-controls">
+                      <a href="#" id="remove-field" data-contract-check="<%= field.object.contract_fields.count > 0 %>"><i class="fa fa-minus"></i></a>
+
+                    </div>
+                    <%= field.hidden_field :template_id %>
+                    <%= field.hidden_field :_destroy, class: "field-destroy" %>
+                  </div>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="col-sm-8">
+        <div id="dropzone" class="dropzone dz-container">
+          <div class="dz-message">Drop images here</div>
+        </div>
+      </div> -->
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <div class="pull-right">
+          <input type="button" class="btn btn-warning" id="autosaveSwitch" style="margin-right: 10px" value="To autosaved version">
+          <%= f.submit t('save_changes'), class: "btn btn-primary save-template-form", "data-url" => validate_keys_account_templates_path(@account) %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<script src="//cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<style>
+  /* mde */
+  .mde-autocomplete {
+    position: absolute;
+    background: white;
+    min-width: 150px;
+    border-radius: 2px;
+  }
+
+  .mde-autocomplete-tip {
+    height: 32px;
+    line-height: 32px;
+    border-bottom: 1px solid #ECECEC;
+    border-left: 1px solid #D0D0D0;
+    border-right: 1px solid #D0D0D0;
+    cursor: pointer;
+    padding: 0 8px;
+  }
+
+  .mde-autocomplete-tip:last-child {
+    border-bottom: 1px solid #D0D0D0;
+  }
+
+  .mde-close {
+    text-align: right;
+    cursor: pointer;
+    padding: 4px 8px;
+    color: #D0D0D0;
+    font-size: 10px;
+    background: #F7F7F7;
+    border: 1px solid #D0D0D0;
+    border-bottom: none;
+    border-radius: 2px 2px 0 0;
+  }
+
+  .mde-close:hover {
+    color: #989898;
+  }
+
+  .mde-autocomplete-tip:hover, .mde-autocomplete-tip.selected {
+    background: #23C6C8;
+    border-color: #23C6C8;
+    color: white;
+  }
+
+  /* dropzone */
+  .dz-container {
+    min-height: 220px;
+    padding: 30px 15px;
+    background: white;
+    border: none;
+  }
+
+  .dropzone .dz-message {
+    text-transform: uppercase;
+    font-size: 18px;
+    text-align: center;
+    line-height: 160px;
+    margin: 0;
+  }
+</style>
+<script>
+  /* DROPZONE
+  Dropzone.autoDiscover = false;
+
+  $("#dropzone").dropzone({
+    url: "/file/post",
+    acceptedFiles: 'image/*',
+
+    accept: function (file, done) {
+      done("Stub without backend");
+    },
+
+    init: function(file, response) {
+      this.on("success", function(file) {
+        console.log('file loaded');
+        console.log(file);
+        console.log(response);
+      });
+    }
+  });
+  */
+
+  /* STICKY */
+  var stickyElement = function (elementId, initialTop, paddingTop, onMobile) {
+    if (!onMobile) {
+      if (window.innerWidth < 768) return this;
+    }
+
+    var self = this;
+
+    // DATA
+    self.element = $('#' + elementId);
+    self.initialTop = paddingTop;
+    self.paddingTop = paddingTop;
+    self.initialOffsetTop = self.element.offset().top;
+
+    // HANDLERS
+    self.onScroll = function () {
+      if (window.scrollY > self.initialOffsetTop) {
+        self.element.css('top', (window.scrollY - self.initialOffsetTop + self.initialTop + self.paddingTop) + 'px');
+      }
+      else {
+        self.element.css('top', self.initialTop + 'px');
+      }
+    };
+
+    // INIT
+    self.element.css('position', 'absolute');
+    self.element.css('right', '0');
+    self.element.css('top', self.initialTop + 'px');
+    self.element.css('transition', '0.7s top ease');
+
+    // SUBSCRIBTION
+    $(window).on('scroll', self.onScroll);
+
+    return self;
+  };
+
+  var se = new stickyElement('sticky-1', 20, 20, false);
+
+
+  var fieldsAutocomplete = function (editor) {
+    // TODO: update autocomplete items each time we show dialog
+    var self = this;
+
+    // DATA
+    self.editor = editor;
+    self.text = '';
+    self.isOpened = false;
+    self.fields = [];
+    self.selectedIndex = 0;
+    self.selectedFieldsIndex = 0;
+
+    self.keyMap = {
+      Enter: function(cm) {
+        var value = self.fields[self.selectedFieldsIndex];
+        self.enter(value);
+      },
+      Down: function (cm) {
+        self.selectedIndex++;
+        self.update();
+      },
+      Up: function (cm) {
+        self.selectedIndex--;
+        self.update();
+      }
+    };
+
+    // LOGIC
+    self.getFields = function () {
+      self.fields = [];
+
+      $('.field-key').each(function (index, item) {
+        if ($(item).is(':visible') && item.value != undefined && item.value != '') {
+          self.fields.push(item.value);
+        }
+      });
+    };
+
+    self.open = function () {
+      self.editor.codemirror.addKeyMap(self.keyMap);
+
+      self.isOpened = true;
+      self.selectedIndex = 0;
+
+      self.update();
+    };
+
+    self.close = function () {
+      self.editor.codemirror.removeKeyMap(self.keyMap);
+
+      self.isOpened = false;
+
+      $('.mde-autocomplete').remove();
+    };
+
+    self.update = function () {
+      self.getFields();
+
+      var cursor = self.editor.codemirror.getCursor();
+      var coords = self.editor.codemirror.charCoords(cursor);
+
+      var tips = $('<div>')
+        .addClass('mde-autocomplete')
+        .css('top', (coords.top + 20).toFixed() + 'px')
+        .css('left', (coords.left).toFixed() + 'px');
+
+      var closeTips = $('<div>')
+        .addClass('mde-close')
+        .html('X')
+        .on('click', function () {
+          self.close();
+          self.text = '';
+        });
+
+      tips.append(closeTips);
+
+      var text = self.text.substring(2).toLowerCase();
+      var added = 0;
+
+      for (var i = 0; i < self.fields.length; i++) {
+        if (self.fields[i].toLowerCase().indexOf(text) === -1) continue;
+
+        var tip = $('<div>')
+          .addClass('mde-autocomplete-tip')
+          .html(self.fields[i])
+          .on('click', function () {
+            var value = $(this).html();
+
+            self.enter(value);
+          });
+
+        if (added === self.selectedIndex) {
+          self.selectedFieldsIndex = i;
+          tip.addClass('selected');
+        }
+
+        tips.append(tip);
+        added++;
+      }
+
+      $('.mde-autocomplete').remove();
+      $('body').append(tips);
+    };
+
+    self.enter = function (value) {
+      var cursor = self.editor.codemirror.getCursor();
+      var line = self.editor.codemirror.getLineHandle(cursor.line);
+
+      console.log('enter:');
+      console.log(cursor);
+      console.log(line);
+
+      line.text = line.text.substring(0, cursor.ch - self.text.length)
+        + '{{' + value + '}}'
+        + line.text.substring(cursor.ch);
+
+      self.editor.value(self.editor.value());
+
+      cursor.ch = cursor.ch - self.text.length + value.length + 4;
+      self.editor.codemirror.setCursor(cursor);
+
+      self.close();
+      self.text = '';
+    };
+
+    // HANDLERS
+    self.changeHandler = function(instance, changeObj) {
+      if (self.isOpened) {
+        if (changeObj.origin === '+delete') {
+          self.text = self.text.slice(0, self.text.length - 1);
+        }
+        else {
+          self.text += changeObj.text[0];
+        }
+
+        if (self.text === '{') {
+          self.close();
+        }
+        else if (self.text.indexOf('}}') !== -1) {
+          self.close();
+          self.text = '';
+        }
+        else {
+          self.selectedIndex = 0;
+          self.update();
+        }
+      }
+      else {
+        if (changeObj.origin === '+input' && changeObj.text[0] === '{') {
+          self.text += '{';
+        }
+        else {
+          self.text = '';
+        }
+
+        if (self.text === '{{') self.open();
+      }
+    };
+
+/*
+    self.onKey = function (instance, name, event) {
+      if (!self.isOpened) {
+        return;
+      }
+
+      if (name === 'Down' || name === 'Up' || name === 'Enter') {
+        self.editor.codemirror.setCursor(self.cursor);
+      }
+      else {
+        self.cursor = self.editor.codemirror.getCursor();
+        console.log('onKey:');
+        console.log(self.cursor);
+      }
+
+      if (name === 'Down' && self.selectedIndex < self.fields.length - 1) {
+        self.selectedIndex++;
+        self.update();
+      }
+      else if (name === 'Up' && self.selectedIndex > 0) {
+
+      }
+      else if (name === 'Enter') {
+        var value = self.fields[self.selectedFieldsIndex];
+        self.enter(value);
+      }
+    };*/
+
+    // SUBSCRIBTION
+    self.editor.codemirror.on("change", self.changeHandler);
+    //self.editor.codemirror.on("keyHandled", self.onKey);
+
+    return self;
+  };
+
+  var fieldsHighlight = function (editor) {
+    var self = this;
+
+    // DATA
+    self.editor = editor;
+    self.optionsField = {
+      css: 'background: red; color: white'
+    };
+    self.optionsMagic = {
+      css: 'background: blue; color: white'
+    };
+
+    self.highlight = function (line, regex, options) {
+        var match = undefined;
+
+        while ((match = regex.exec(line.text)) != null) {
+            var lineNum = self.editor.codemirror.getLineNumber(line);
+
+            var start = {
+              ch: match.index,
+              line: lineNum
+            };
+
+            var end = {
+              ch: match.index + match[0].length,
+              line: lineNum
+            };
+
+            self.editor.codemirror.markText(start, end, options);
+        }
+    };
+
+    // HANDLERS
+    self.onChange = function () {
+      self.editor.codemirror.eachLine(function (line) {
+        var fieldRegex = /{{[^{}]*}}/g;
+        var magicRegex = /\[\[[^\[\]]*\]\]/g;
+
+        self.highlight(line, fieldRegex, self.optionsField);
+        self.highlight(line, magicRegex, self.optionsMagic);
+      });
+    };
+
+    self.onChange();
+
+    // SUBSCRIBTION
+    self.editor.codemirror.on("change", self.onChange);
+
+    return self;
+  };
+
+  // AUTOSAVE
+  var originalBody = $('#template-body').val();
+
+  var autosave = function(editor, toggleSelector, saveKey, originalContent) {
+    var self = this;
+
+    try {
+      window.localStorage.setItem('test', 'test');
+      window.localStorage.removeItem('test');
+    } catch (exception) { return self; }
+
+    self.get = function () {
+      if (!self.storage[self.key]) return undefined;
+      return JSON.parse(self.storage[self.key]);
+    };
+
+    self.put = function (content) {
+       self.storage[self.key] = JSON.stringify(content);
+    };
+
+    self.editor = editor;
+    self.storage = window.localStorage;
+    self.key = saveKey.replace(/\//g, '-');
+    self.original = originalContent;
+    self.saved = self.get();
+    self.muted = false;
+    self.isOriginal = true;
+
+    self.save = function () {
+      if (self.muted) return;
+
+      //self.muted = true;
+      //setTimeout(self.unmute, 500);
+
+      self.put(self.editor.value());
+      self.saved = self.editor.value();
+      //console.log("saved");
+    };
+
+    self.unmute = function () {
+      self.muted = false;
+    };
+
+    self.toggle = function () {
+      if (self.isOriginal) {
+        if(self.saved == undefined) {
+          alert('There is no autosaved version');
+          return;
+        }
+
+        self.editor.value(self.saved);
+        $(this).val('To original version');
+        self.isOriginal = false;
+      }
+      else {
+        self.editor.value(self.original);
+        $(this).val('To autosaved version');
+        self.isOriginal = true;
+      }
+    };
+
+    editor.codemirror.on("changes", self.save);
+    $(toggleSelector).on('click', self.toggle);
+
+    return self;
+  };
+
+  // MDE
+  var simplemde = new SimpleMDE({
+    element: $("#template-body")[0],
+    autofocus: true,
+    spellChecker: false,
+    previewRender: function (plaintext) {
+      console.log(plaintext);
+      console.log(this);
+
+      if (simplemde == undefined) return '';
+
+      var html = simplemde.markdown(plaintext);
+
+      var fields = plaintext.match(/{{[^{}]*}}/gm);
+
+      for (var i = 0; i < fields.length; i++) {
+        var highlighted = '<span style="background: red">' + fields[i] + '</span>';
+        var re = new RegExp(fields[i], "gm");
+        html = html.replace(re, highlighted);
+      }
+
+      return html;
+    }
+  });
+
+  simplemde.render();
+
+  var autocomplete = new fieldsAutocomplete(simplemde);
+  var highlight = new fieldsHighlight(simplemde);
+  var aso = new autosave(simplemde, '#autosaveSwitch', 'template-editor' + '<%= @url %>', originalBody);
+
+  $('.save-template-form').click(function(e){
+    e.preventDefault()
+    fields = $('.field-key:visible').map(function(){ return $(this).val() }).toArray().toString();
+    text = simplemde.value();
+    validate_url = $(this).data('url');
+    $.ajax({
+       type: 'put',
+       url: validate_url,
+       data: {text: text, fields: fields},
+       success : function(response) {
+         if(response == "success"){
+           validate_fields();
+         }
+         else{
+           alert(response);
+         }
+       },
+       error : function() {
+           alert('Something went wrong.');
+       },
+     });
+  });
+
+  function validate_fields(){
+    check = true
+    $('.error-text').remove();
+    $('.field-key').css('border-color', '#e5e6e7');
+    $('.field-key:visible').each(function(){
+      val = $(this).val();
+      field = $(this);
+      if(!(/^[a-zA-Z0-9-_ ]+$/.test(val))) {
+        field.css('border-color', 'red');
+        field.parent().append("<p class='error-text' style='color:red;'>It can include alphanumerics, '-' and '_' only.</p>")
+        setTimeout(function(){
+          field.css('border-color', '#e5e6e7');
+          $('.error-text').remove();
+        }, 3000)
+        check = false;
+      }
+    });
+    if(check){
+      $('form').submit();
+    }
+  }
+</script>

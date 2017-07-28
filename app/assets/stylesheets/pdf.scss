@@ -1,0 +1,62 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+.show-on-mobile {
+    display: none;
+}
+
+@media (max-width: 767px) {
+  .show-on-mobile {
+      display: block;
+  }
+
+  .hide-on-mobile {
+      display: none;
+  }
+
+  select:focus,
+  textarea:focus,
+  input:focus {
+    font-size: 16px;
+  }
+}
+
+.contract-text {
+	padding-top: 20px;
+	padding-bottom: 65px; 
+}
+
+.document-info {
+	margin-bottom: 30px;
+
+	> .row {
+		margin-bottom: 15px;
+
+		> .title {
+			font-weight: bold;
+    		text-transform: uppercase;
+		}
+	}
+}
+
+.document-history {
+	> .row {
+	    padding: 20px 0;
+	    border-top: 1px solid #ddd;
+
+	    > .status {
+	    	text-align: center;
+		    text-transform: uppercase;
+
+		    @media (max-width: 767px) {
+		    	font-weight: bold;
+		    	text-align: left;
+	    	    margin-bottom: 5px;
+		    }
+	    }
+
+	    > .date > div, > .desc > div {
+	    	margin-bottom: 10px;
+	    }
+	}
+}

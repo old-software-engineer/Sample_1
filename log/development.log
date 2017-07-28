@@ -1,0 +1,953 @@
+  [1m[35m (118.9ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying PRIMARY KEY)[0m
+  [1m[35m (125.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7055079949458468165);[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.9ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateAccounts (20160707120112)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (127.3ms)[0m  [1m[35mCREATE TABLE "accounts" ("id" serial primary key, "user_id" integer, "role" character varying, "status" character varying DEFAULT 'trial_start', "reminder_sent" boolean DEFAULT 'f', "proactives_access_token" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160707120112"]]
+  [1m[35m (20.3ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateTemplates (20160707120540)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (133.9ms)[0m  [1m[35mCREATE TABLE "templates" ("id" serial primary key, "name" character varying, "account_id" integer, "body" text, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (49.9ms)[0m  [1m[35mCREATE  INDEX  "index_templates_on_account_id" ON "templates"  ("account_id")[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160707120540"]]
+  [1m[35m (25.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateFields (20160707121010)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (123.4ms)[0m  [1m[35mCREATE TABLE "fields" ("id" serial primary key, "template_id" integer, "key" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (49.6ms)[0m  [1m[35mCREATE  INDEX  "index_fields_on_template_id" ON "fields"  ("template_id")[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160707121010"]]
+  [1m[35m (26.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateContracts (20160707121137)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (124.1ms)[0m  [1m[35mCREATE TABLE "contracts" ("id" serial primary key, "account_id" integer, "slug" character varying, "status" integer, "url" character varying, "title" character varying, "message" text, "template_id" integer, "content" text, "language" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (38.8ms)[0m  [1m[35mCREATE  INDEX  "index_contracts_on_account_id" ON "contracts"  ("account_id")[0m
+  [1m[35m (39.8ms)[0m  [1m[35mCREATE  INDEX  "index_contracts_on_template_id" ON "contracts"  ("template_id")[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160707121137"]]
+  [1m[35m (22.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateContractFields (20160707121310)
+  [1m[35m (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (102.9ms)[0m  [1m[35mCREATE TABLE "contract_fields" ("id" serial primary key, "contract_id" integer, "field_id" integer, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (39.0ms)[0m  [1m[35mCREATE  INDEX  "index_contract_fields_on_contract_id" ON "contract_fields"  ("contract_id")[0m
+  [1m[35m (50.9ms)[0m  [1m[35mCREATE  INDEX  "index_contract_fields_on_field_id" ON "contract_fields"  ("field_id")[0m
+  [1m[35mSQL (0.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160707121310"]]
+  [1m[35m (21.8ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateSigners (20160707121448)
+  [1m[35m (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (121.3ms)[0m  [1m[35mCREATE TABLE "signers" ("id" serial primary key, "contract_id" integer, "name" character varying, "email" character varying, "phone" character varying(11), "code" character varying, "status" integer, "slug" character varying, "dial_code" character varying DEFAULT '1', "country_code" character varying DEFAULT 'ca', "code_attempt_count" integer DEFAULT 0, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (49.7ms)[0m  [1m[35mCREATE  INDEX  "index_signers_on_contract_id" ON "signers"  ("contract_id")[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160707121448"]]
+  [1m[35m (21.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateLogs (20160707121709)
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (125.2ms)[0m  [1m[35mCREATE TABLE "logs" ("id" serial primary key, "signer_id" integer, "contract_id" integer, "ip" character varying, "status" integer DEFAULT 0, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (38.2ms)[0m  [1m[35mCREATE  INDEX  "index_logs_on_signer_id" ON "logs"  ("signer_id")[0m
+  [1m[35m (41.8ms)[0m  [1m[35mCREATE  INDEX  "index_logs_on_contract_id" ON "logs"  ("contract_id")[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20160707121709"]]
+  [1m[35m (29.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.7ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", 2017-05-02 18:37:09 UTC], ["updated_at", 2017-05-02 18:37:09 UTC]]
+  [1m[35m (11.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT pg_advisory_unlock(7055079949458468165)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (3.4ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'accounts'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (2.9ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'contract_fields'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (3.2ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'contracts'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (3.0ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'fields'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (2.6ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'logs'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (2.5ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'signers'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (2.5ms)[0m  [1m[34mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'templates'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+Started GET "/" for 127.0.0.1 at 2017-05-03 00:07:26 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by SessionsController#new as HTML
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (9107.0ms)
+Completed 200 OK in 9531ms (Views: 9516.4ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/login" for 127.0.0.1 at 2017-05-03 00:07:47 +0530
+Processing by SessionsController#create as HTML
+  Parameters: {"authenticity_token"=>"zB9gEMRUraZ3e3SQBLbW+6gE3xjhkUqQXDABkFf7DoR+8TTkiVDv3DBbpO04XeICSDVV7cBxiUEUbH3n2T4wUA=="}
+Redirected to http:/oauth/authorize?client_id&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&response_type=code&scope=public+write
+Completed 302 Found in 37ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/oauth/authorize?client_id&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&response_type=code&scope=public+write" for 127.0.0.1 at 2017-05-03 00:07:47 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/oauth/authorize"):
+  
+actionpack (5.0.0) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+web-console (3.3.1) lib/web_console/middleware.rb:131:in `call_app'
+web-console (3.3.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.3.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.3.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.0) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.0) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:70:in `block in tagged'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:70:in `tagged'
+railties (5.0.0) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.1.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/method_override.rb:22:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.0) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.0) lib/rails/engine.rb:522:in `call'
+puma (3.4.0) lib/puma/configuration.rb:224:in `call'
+puma (3.4.0) lib/puma/server.rb:569:in `handle_request'
+puma (3.4.0) lib/puma/server.rb:406:in `process_client'
+puma (3.4.0) lib/puma/server.rb:271:in `block in run'
+puma (3.4.0) lib/puma/thread_pool.rb:114:in `block in spawn_thread'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.3ms)
+  Rendered collection of /home/codegarage/.rvm/gems/ruby-2.3.1/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/routes/_route.html.erb [45 times] (14.7ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/routes/_table.html.erb (8.5ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.6ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (52.5ms)
+Started POST "/login" for 127.0.0.1 at 2017-05-03 00:08:47 +0530
+Processing by SessionsController#create as HTML
+  Parameters: {"authenticity_token"=>"zB9gEMRUraZ3e3SQBLbW+6gE3xjhkUqQXDABkFf7DoR+8TTkiVDv3DBbpO04XeICSDVV7cBxiUEUbH3n2T4wUA=="}
+Redirected to http:/oauth/authorize?client_id&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&response_type=code&scope=public+write
+Completed 302 Found in 2ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/oauth/authorize?client_id&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&response_type=code&scope=public+write" for 127.0.0.1 at 2017-05-03 00:08:47 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/oauth/authorize"):
+  
+actionpack (5.0.0) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+web-console (3.3.1) lib/web_console/middleware.rb:131:in `call_app'
+web-console (3.3.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.3.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.3.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.0) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.0) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:70:in `block in tagged'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:70:in `tagged'
+railties (5.0.0) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.1.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/method_override.rb:22:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.0) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.0) lib/rails/engine.rb:522:in `call'
+puma (3.4.0) lib/puma/configuration.rb:224:in `call'
+puma (3.4.0) lib/puma/server.rb:569:in `handle_request'
+puma (3.4.0) lib/puma/server.rb:406:in `process_client'
+puma (3.4.0) lib/puma/server.rb:271:in `block in run'
+puma (3.4.0) lib/puma/thread_pool.rb:114:in `block in spawn_thread'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.8ms)
+  Rendered collection of /home/codegarage/.rvm/gems/ruby-2.3.1/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/routes/_route.html.erb [45 times] (12.4ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/routes/_table.html.erb (1.3ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.4ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (42.5ms)
+Started GET "/" for 127.0.0.1 at 2017-05-03 13:44:18 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by SessionsController#new as HTML
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (9238.5ms)
+Completed 200 OK in 9661ms (Views: 9626.1ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/login" for 127.0.0.1 at 2017-05-03 13:46:01 +0530
+Processing by SessionsController#create as HTML
+  Parameters: {"authenticity_token"=>"At7CeepUm7aJPBteRtP9RZmBIRoVV9F9+DdLsKN+7r8ZuL8KV2TPG/ws2USi72DC+9Pk0oh0YXKR4nQPXq52Tg=="}
+Redirected to http:/oauth/authorize?client_id&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&response_type=code&scope=public+write
+Completed 302 Found in 52ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/oauth/authorize?client_id&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&response_type=code&scope=public+write" for 127.0.0.1 at 2017-05-03 13:46:01 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/oauth/authorize"):
+  
+actionpack (5.0.0) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+web-console (3.3.1) lib/web_console/middleware.rb:131:in `call_app'
+web-console (3.3.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.3.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.3.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.0) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.0) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:70:in `block in tagged'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:70:in `tagged'
+railties (5.0.0) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.1.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/method_override.rb:22:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.0) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.0) lib/rails/engine.rb:522:in `call'
+puma (3.4.0) lib/puma/configuration.rb:224:in `call'
+puma (3.4.0) lib/puma/server.rb:569:in `handle_request'
+puma (3.4.0) lib/puma/server.rb:406:in `process_client'
+puma (3.4.0) lib/puma/server.rb:271:in `block in run'
+puma (3.4.0) lib/puma/thread_pool.rb:114:in `block in spawn_thread'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.9ms)
+  Rendered collection of /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/routes/_route.html.erb [45 times] (14.0ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/routes/_table.html.erb (8.4ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.6ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (54.8ms)
+  [1m[36mAccount Load (13.2ms)[0m  [1m[34mSELECT  "accounts".* FROM "accounts" ORDER BY "accounts"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+Started GET "/oauth/authorize?client_id&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&response_type=code&scope=public+write" for 127.0.0.1 at 2017-05-03 14:40:54 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  
+ActionController::RoutingError (No route matches [GET] "/oauth/authorize"):
+  
+actionpack (5.0.0) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+web-console (3.3.1) lib/web_console/middleware.rb:131:in `call_app'
+web-console (3.3.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.3.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.3.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.0) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.0) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:70:in `block in tagged'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:70:in `tagged'
+railties (5.0.0) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.1.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/method_override.rb:22:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.0) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.0) lib/rails/engine.rb:522:in `call'
+puma (3.4.0) lib/puma/configuration.rb:224:in `call'
+puma (3.4.0) lib/puma/server.rb:569:in `handle_request'
+puma (3.4.0) lib/puma/server.rb:406:in `process_client'
+puma (3.4.0) lib/puma/server.rb:271:in `block in run'
+puma (3.4.0) lib/puma/thread_pool.rb:114:in `block in spawn_thread'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.2ms)
+  Rendered collection of /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/routes/_route.html.erb [45 times] (27.3ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/routes/_table.html.erb (7.3ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (11.7ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (82.3ms)
+Started GET "/" for 127.0.0.1 at 2017-05-03 14:41:06 +0530
+Processing by SessionsController#new as HTML
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (433.3ms)
+Completed 200 OK in 4190799ms (Views: 606.0ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/login" for 127.0.0.1 at 2017-05-03 16:52:20 +0530
+Processing by SessionsController#create as HTML
+  Parameters: {"authenticity_token"=>"pLL040Qj7SfgnOmy2uwtABTbuH1HGB4KO1eLIgzLxzK/1ImQ+RO5ipWMK6g+0LCHdol9tdo7rgVSgrSd8Rtfww=="}
+Redirected to http:/oauth/authorize?client_id&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&response_type=code&scope=public+write
+Completed 302 Found in 29ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/oauth/authorize?client_id&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&response_type=code&scope=public+write" for 127.0.0.1 at 2017-05-03 16:52:20 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/oauth/authorize"):
+  
+actionpack (5.0.0) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+web-console (3.3.1) lib/web_console/middleware.rb:131:in `call_app'
+web-console (3.3.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.3.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.3.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.0) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.0) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:70:in `block in tagged'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:70:in `tagged'
+railties (5.0.0) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.1.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/method_override.rb:22:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.0) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.0) lib/rails/engine.rb:522:in `call'
+puma (3.4.0) lib/puma/configuration.rb:224:in `call'
+puma (3.4.0) lib/puma/server.rb:569:in `handle_request'
+puma (3.4.0) lib/puma/server.rb:406:in `process_client'
+puma (3.4.0) lib/puma/server.rb:271:in `block in run'
+puma (3.4.0) lib/puma/thread_pool.rb:114:in `block in spawn_thread'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (7.8ms)
+  Rendered collection of /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/routes/_route.html.erb [45 times] (11.5ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/routes/_table.html.erb (1.1ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.3ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (47.5ms)
+Started GET "/" for 127.0.0.1 at 2017-05-03 23:02:36 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by SessionsController#new as HTML
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (553.8ms)
+Completed 200 OK in 740ms (Views: 726.1ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/login" for 127.0.0.1 at 2017-05-03 23:02:42 +0530
+Processing by SessionsController#create as HTML
+  Parameters: {"authenticity_token"=>"Zqw2z+booRjUVni1ZGaE7ygmOUeXMnrT0JYK65MS2SF9yku8W9j1taFGuq+AWhloSnT8jwoRyty5QzVUbsJB0A=="}
+Redirected to http:/oauth/authorize?client_id&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&response_type=code&scope=public+write
+Completed 302 Found in 30ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/oauth/authorize?client_id&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&response_type=code&scope=public+write" for 127.0.0.1 at 2017-05-03 23:02:42 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/oauth/authorize"):
+  
+actionpack (5.0.0) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+web-console (3.3.1) lib/web_console/middleware.rb:131:in `call_app'
+web-console (3.3.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.3.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.3.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.0) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.0) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:70:in `block in tagged'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:70:in `tagged'
+railties (5.0.0) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.1.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/method_override.rb:22:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.0) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.0) lib/rails/engine.rb:522:in `call'
+puma (3.4.0) lib/puma/configuration.rb:224:in `call'
+puma (3.4.0) lib/puma/server.rb:569:in `handle_request'
+puma (3.4.0) lib/puma/server.rb:406:in `process_client'
+puma (3.4.0) lib/puma/server.rb:271:in `block in run'
+puma (3.4.0) lib/puma/thread_pool.rb:114:in `block in spawn_thread'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.3ms)
+  Rendered collection of /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/routes/_route.html.erb [45 times] (11.9ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/routes/_table.html.erb (6.6ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.5ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (46.2ms)
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-03 23:03:26 +0530
+Processing by SessionsController#callback as HTML
+Redirected to http://localhost:3000/login
+Completed 302 Found in 2ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for 127.0.0.1 at 2017-05-03 23:03:26 +0530
+Processing by SessionsController#new as HTML
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (2.1ms)
+Completed 200 OK in 106ms (Views: 104.8ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-03 23:03:42 +0530
+Processing by SessionsController#callback as HTML
+Redirected to http://localhost:3000/login
+Completed 302 Found in 324308ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for 127.0.0.1 at 2017-05-03 23:09:06 +0530
+Processing by SessionsController#new as HTML
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (2.7ms)
+Completed 200 OK in 106ms (Views: 103.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-03 23:15:13 +0530
+Processing by SessionsController#callback as HTML
+Redirected to http://localhost:3000/login
+Completed 302 Found in 18595ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for 127.0.0.1 at 2017-05-03 23:15:32 +0530
+Processing by SessionsController#new as HTML
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (1.9ms)
+Completed 200 OK in 118ms (Views: 117.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-03 23:15:37 +0530
+Processing by SessionsController#callback as HTML
+Redirected to http://localhost:3000/login
+Completed 302 Found in 38632ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for 127.0.0.1 at 2017-05-03 23:16:16 +0530
+Processing by SessionsController#new as HTML
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (2.1ms)
+Completed 200 OK in 115ms (Views: 113.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-03 23:16:19 +0530
+Processing by SessionsController#callback as HTML
+Redirected to http://localhost:3000/login
+Completed 302 Found in 2440ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for 127.0.0.1 at 2017-05-03 23:16:22 +0530
+Processing by SessionsController#new as HTML
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (2.0ms)
+Completed 200 OK in 111ms (Views: 109.7ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/login" for 127.0.0.1 at 2017-05-03 23:20:04 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by SessionsController#create as HTML
+  Parameters: {"authenticity_token"=>"XhtBUWpBrb04bb4YFSCbqIFAZp+6useGia1M192Nt4BFfTwi13H5EE19fALxHAYv4xKjVyeZd4ngeHNoIF0vcQ=="}
+Redirected to http:/oauth/authorize?client_id&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&response_type=code&scope=public+write
+Completed 302 Found in 70ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/oauth/authorize?client_id&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&response_type=code&scope=public+write" for 127.0.0.1 at 2017-05-03 23:20:04 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/oauth/authorize"):
+  
+actionpack (5.0.0) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+web-console (3.3.1) lib/web_console/middleware.rb:131:in `call_app'
+web-console (3.3.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.3.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.3.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.0) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.0) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:70:in `block in tagged'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:70:in `tagged'
+railties (5.0.0) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.1.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/method_override.rb:22:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.0) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.0) lib/rails/engine.rb:522:in `call'
+puma (3.4.0) lib/puma/configuration.rb:224:in `call'
+puma (3.4.0) lib/puma/server.rb:569:in `handle_request'
+puma (3.4.0) lib/puma/server.rb:406:in `process_client'
+puma (3.4.0) lib/puma/server.rb:271:in `block in run'
+puma (3.4.0) lib/puma/thread_pool.rb:114:in `block in spawn_thread'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.4ms)
+  Rendered collection of /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/routes/_route.html.erb [45 times] (14.7ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/routes/_table.html.erb (10.6ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (2.9ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (58.7ms)
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-03 23:20:11 +0530
+Processing by SessionsController#callback as HTML
+Redirected to http://localhost:3000/login
+Completed 302 Found in 3523ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for 127.0.0.1 at 2017-05-03 23:20:15 +0530
+Processing by SessionsController#new as HTML
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (393.3ms)
+Completed 200 OK in 546ms (Views: 545.3ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/login" for 127.0.0.1 at 2017-05-03 23:20:37 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by SessionsController#create as HTML
+  Parameters: {"authenticity_token"=>"2BENqQHwU9Z4BXUiU0ng+w/IejUxPEGrEkfQgL5aXYHDd3DavMAHew0Vtzi3dX18bZq//awf8aR7ku8/Q4rFcA=="}
+Redirected to http:/oauth/authorize?client_id&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&response_type=code&scope=public+write
+Completed 302 Found in 69ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/oauth/authorize?client_id&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback&response_type=code&scope=public+write" for 127.0.0.1 at 2017-05-03 23:20:38 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/oauth/authorize"):
+  
+actionpack (5.0.0) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+web-console (3.3.1) lib/web_console/middleware.rb:131:in `call_app'
+web-console (3.3.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.3.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.3.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.0) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.0) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:70:in `block in tagged'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.0) lib/active_support/tagged_logging.rb:70:in `tagged'
+railties (5.0.0) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.1.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/method_override.rb:22:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.0) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.0) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.0) lib/rails/engine.rb:522:in `call'
+puma (3.4.0) lib/puma/configuration.rb:224:in `call'
+puma (3.4.0) lib/puma/server.rb:569:in `handle_request'
+puma (3.4.0) lib/puma/server.rb:406:in `process_client'
+puma (3.4.0) lib/puma/server.rb:271:in `block in run'
+puma (3.4.0) lib/puma/thread_pool.rb:114:in `block in spawn_thread'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.4ms)
+  Rendered collection of /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/routes/_route.html.erb [45 times] (15.2ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/routes/_table.html.erb (10.8ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (3.5ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (60.0ms)
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-03 23:20:44 +0530
+Processing by SessionsController#callback as HTML
+Redirected to http://localhost:3000/login
+Completed 302 Found in 2870ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for 127.0.0.1 at 2017-05-03 23:20:47 +0530
+Processing by SessionsController#new as HTML
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (403.8ms)
+Completed 200 OK in 561ms (Views: 560.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-03 23:21:39 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by SessionsController#callback as HTML
+Completed 500 Internal Server Error in 2081ms (ActiveRecord: 0.0ms)
+
+
+  
+NoMethodError (undefined method `token' for User:Class):
+  
+app/controllers/sessions_controller.rb:36:in `sign_in_user'
+app/controllers/sessions_controller.rb:15:in `callback'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (5.1ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (3.5ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.4ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (37.7ms)
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-03 23:22:13 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by SessionsController#callback as HTML
+Redirected to http://localhost:3000/login
+Completed 302 Found in 42492ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for 127.0.0.1 at 2017-05-03 23:22:56 +0530
+Processing by SessionsController#new as HTML
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (341.7ms)
+Completed 200 OK in 550ms (Views: 548.7ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-04 00:19:24 +0530
+Processing by SessionsController#callback as HTML
+Redirected to http://localhost:3000/login
+Completed 302 Found in 42894ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/login" for 127.0.0.1 at 2017-05-04 00:20:07 +0530
+Processing by SessionsController#new as HTML
+  Rendering sessions/new.html.erb within layouts/application
+  Rendered sessions/new.html.erb within layouts/application (1.7ms)
+Completed 200 OK in 101ms (Views: 100.1ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-04 00:20:10 +0530
+Processing by SessionsController#callback as HTML
+Completed 500 Internal Server Error in 5393ms (ActiveRecord: 0.0ms)
+
+
+  
+Proactives::Errors::InvalidUsernameOrPassword (Invalid username or password):
+  
+app/models/user.rb:31:in `token_by_password'
+app/models/user.rb:20:in `token'
+app/controllers/sessions_controller.rb:36:in `sign_in_user'
+app/controllers/sessions_controller.rb:15:in `callback'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (3.0ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.6ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.7ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (24.4ms)
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-04 00:20:39 +0530
+Processing by SessionsController#callback as HTML
+Completed 500 Internal Server Error in 3200ms (ActiveRecord: 0.0ms)
+
+
+  
+Faraday::ConnectionFailed (Failed to open TCP connection to :80 (Connection refused - connect(2) for nil port 80)):
+  
+app/controllers/sessions_controller.rb:16:in `callback'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (3.9ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.9ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.8ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (26.0ms)
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-04 00:38:25 +0530
+Processing by SessionsController#callback as HTML
+Completed 500 Internal Server Error in 48358ms (ActiveRecord: 0.0ms)
+
+
+  
+Faraday::ConnectionFailed (Failed to open TCP connection to :80 (Connection refused - connect(2) for nil port 80)):
+  
+app/controllers/sessions_controller.rb:16:in `callback'
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-04 00:39:13 +0530
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (4.2ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.1ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.7ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (26.5ms)
+Processing by SessionsController#callback as HTML
+Completed 500 Internal Server Error in 848338ms (ActiveRecord: 0.0ms)
+
+
+  
+Faraday::ConnectionFailed (Failed to open TCP connection to :80 (Connection refused - connect(2) for nil port 80)):
+  
+app/controllers/sessions_controller.rb:17:in `callback'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (4.0ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.6ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.7ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (26.1ms)
+  [1m[36mAccount Load (0.3ms)[0m  [1m[34mSELECT  "accounts".* FROM "accounts" ORDER BY "accounts"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[35m (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (775.9ms)[0m  [1m[32mINSERT INTO "accounts" ("user_id", "role", "proactives_access_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["user_id", 1], ["role", "new"], ["proactives_access_token", "swa"], ["created_at", 2017-05-03 19:27:43 UTC], ["updated_at", 2017-05-03 19:27:43 UTC]]
+  [1m[35m (128.8ms)[0m  [1m[35mCOMMIT[0m
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-04 00:58:42 +0530
+Processing by SessionsController#callback as HTML
+  [1m[36mAccount Load (0.6ms)[0m  [1m[34mSELECT  "accounts".* FROM "accounts" ORDER BY "accounts"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Completed 500 Internal Server Error in 5704ms (ActiveRecord: 6.5ms)
+
+
+  
+NoMethodError (undefined method `find_or_create_account' for #<Account:0x007f4ce8058138>):
+  
+app/controllers/sessions_controller.rb:17:in `callback'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (2.9ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.5ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.7ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (24.9ms)
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-04 00:59:24 +0530
+Processing by SessionsController#callback as HTML
+  [1m[36mAccount Load (1.1ms)[0m  [1m[34mSELECT  "accounts".* FROM "accounts" ORDER BY "accounts"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Completed 500 Internal Server Error in 2829ms (ActiveRecord: 1.1ms)
+
+
+  
+NoMethodError (undefined method `find_or_create_account' for #<Account:0x007f4ce5a09a40>):
+  
+app/controllers/sessions_controller.rb:17:in `callback'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (3.0ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.5ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.7ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (24.3ms)
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-04 00:59:57 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by SessionsController#callback as HTML
+  [1m[36mAccount Load (0.7ms)[0m  [1m[34mSELECT  "accounts".* FROM "accounts" ORDER BY "accounts"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Completed 500 Internal Server Error in 4256ms (ActiveRecord: 5.6ms)
+
+
+  
+NoMethodError (undefined method `find_or_create_account' for #<Account:0x0000000482f560>):
+  
+app/controllers/sessions_controller.rb:17:in `callback'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (5.6ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (3.2ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.1ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (37.1ms)
+Started GET "/login/callback/" for 127.0.0.1 at 2017-05-04 01:00:18 +0530
+Processing by SessionsController#callback as HTML
+  [1m[36mAccount Load (0.8ms)[0m  [1m[34mSELECT  "accounts".* FROM "accounts" ORDER BY "accounts"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Redirected to http://localhost:3000/accounts/1
+Completed 302 Found in 3822ms (ActiveRecord: 8.1ms)
+
+
+Started GET "/accounts/1" for 127.0.0.1 at 2017-05-04 01:00:22 +0530
+Processing by AccountsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mAccount Load (0.6ms)[0m  [1m[34mSELECT  "accounts".* FROM "accounts" ORDER BY "accounts"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  Rendering accounts/show.html.erb within layouts/application
+  Rendered accounts/show.html.erb within layouts/application (0.3ms)
+  Rendered layouts/_navigation.html.erb (9.6ms)
+Completed 500 Internal Server Error in 590ms (ActiveRecord: 0.6ms)
+
+
+  
+ActionView::Template::Error (undefined method `avatar' for #<Account:0x007f46a80d9648>):
+    4:             <li class="nav-header">
+    5:                 <div class="dropdown profile-element">
+    6:                     <span>
+    7:                         <%= user_avatar(current_user, class: 'img-circle', style: 'width:60px;height:60px;') %>
+    8:                     </span>
+    9:                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+   10:                         <span class="clear">
+  
+app/helpers/application_helper.rb:15:in `user_avatar'
+app/views/layouts/_navigation.html.erb:7:in `_app_views_layouts__navigation_html_erb__1233827351073433775_38517940'
+app/views/layouts/application.html.erb:18:in `_app_views_layouts_application_html_erb__595117652239063216_69970504361900'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (5.4ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.9ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.0ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (27.5ms)
+Started GET "/accounts/1" for 127.0.0.1 at 2017-05-04 01:00:56 +0530
+Processing by AccountsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mAccount Load (0.4ms)[0m  [1m[34mSELECT  "accounts".* FROM "accounts" ORDER BY "accounts"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  Rendering accounts/show.html.erb within layouts/application
+  Rendered accounts/show.html.erb within layouts/application (0.4ms)
+  Rendered layouts/_navigation.html.erb (33.0ms)
+Completed 500 Internal Server Error in 153ms (ActiveRecord: 3.7ms)
+
+
+  
+ActionView::Template::Error (Failed to open TCP connection to :80 (Connection refused - connect(2) for nil port 80)):
+     9:                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+    10:                         <span class="clear">
+    11:                             <span class="block m-t-xs">
+    12:                                 <strong class="font-bold "><%= current_user.username %>   <b class="caret"></b> </strong>
+    13:                             </span>
+    14:                         </span>
+    15:                     </a>
+  
+app/models/account.rb:14:in `user'
+app/models/account.rb:18:in `username'
+app/views/layouts/_navigation.html.erb:12:in `_app_views_layouts__navigation_html_erb__1233827351073433775_69970458808520'
+app/views/layouts/application.html.erb:18:in `_app_views_layouts_application_html_erb__595117652239063216_69970454206660'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (6.1ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (3.4ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.4ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (32.6ms)
+Started GET "/accounts/1" for 127.0.0.1 at 2017-05-04 01:02:11 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by AccountsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mAccount Load (0.9ms)[0m  [1m[34mSELECT  "accounts".* FROM "accounts" ORDER BY "accounts"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  Rendering accounts/show.html.erb within layouts/application
+  Rendered accounts/show.html.erb within layouts/application (1.3ms)
+  Rendered layouts/papaye/_navigation.html.erb (369.8ms)
+  Rendered layouts/_navigation.html.erb (371.8ms)
+  Rendered layouts/_topnavbar.html.erb (0.6ms)
+  Rendered layouts/_footer.html.erb (0.3ms)
+Completed 200 OK in 1027ms (Views: 980.0ms | ActiveRecord: 6.1ms)
+
+
+Started GET "/accounts/1/contracts" for 127.0.0.1 at 2017-05-04 01:02:43 +0530
+Processing by ContractsController#index as HTML
+  Parameters: {"account_id"=>"1"}
+  [1m[36mAccount Load (0.5ms)[0m  [1m[34mSELECT  "accounts".* FROM "accounts" ORDER BY "accounts"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  Rendering contracts/index.html.erb within layouts/application
+  [1m[36mContract Load (8.7ms)[0m  [1m[34mSELECT "contracts".* FROM "contracts" WHERE "contracts"."account_id" = $1[0m  [["account_id", 1]]
+  Rendered contracts/index.html.erb within layouts/application (14.6ms)
+  Rendered layouts/papaye/_navigation.html.erb (1.5ms)
+  Rendered layouts/_navigation.html.erb (3.0ms)
+  Rendered layouts/_topnavbar.html.erb (0.6ms)
+  Rendered layouts/_footer.html.erb (0.3ms)
+Completed 200 OK in 186ms (Views: 115.7ms | ActiveRecord: 11.0ms)
+
+
+Started GET "/accounts/1/contracts/new" for 127.0.0.1 at 2017-05-04 01:02:46 +0530
+Processing by ContractsController#new as HTML
+  Parameters: {"account_id"=>"1"}
+  [1m[36mAccount Load (0.5ms)[0m  [1m[34mSELECT  "accounts".* FROM "accounts" ORDER BY "accounts"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  Rendering contracts/new.html.erb within layouts/application
+  [1m[36mTemplate Load (18.2ms)[0m  [1m[34mSELECT "templates".* FROM "templates" WHERE "templates"."account_id" = $1[0m  [["account_id", 1]]
+  Rendered contracts/_fields.html.erb (0.8ms)
+  Rendered contracts/_form.html.erb (66.2ms)
+  Rendered contracts/new.html.erb within layouts/application (68.8ms)
+  Rendered layouts/papaye/_navigation.html.erb (1.4ms)
+  Rendered layouts/_navigation.html.erb (2.7ms)
+  Rendered layouts/_topnavbar.html.erb (0.7ms)
+  Rendered layouts/_footer.html.erb (0.3ms)
+Completed 200 OK in 225ms (Views: 176.0ms | ActiveRecord: 25.5ms)
+
+
+Started POST "/accounts/1/contracts" for 127.0.0.1 at 2017-05-04 01:02:57 +0530
+Processing by ContractsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"elK3lZjJROJWb4QFGYfZxJYWbm4LlrolI6buHt4SFddhNMrmJfkQTyN/Rh/9u0RD9ESrppa1CipKc9GhI8KNJg==", "contract"=>{"id"=>"", "template_id"=>"", "title"=>"Checking", "language"=>"en", "message"=>"Checking", "account_id"=>"1"}, "commit"=>"Save Changes", "account_id"=>"1"}
+  [1m[36mAccount Load (0.5ms)[0m  [1m[34mSELECT  "accounts".* FROM "accounts" ORDER BY "accounts"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Completed 400 Bad Request in 3ms (ActiveRecord: 0.5ms)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty: signme_contract):
+  
+app/controllers/contracts_controller.rb:193:in `contract_params'
+app/controllers/contracts_controller.rb:38:in `create'
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (3.4ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.9ms)
+  Rendering /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.4ms)
+  Rendered /home/codegarage/.rvm/gems/ruby-2.3.1@papaye/gems/actionpack-5.0.0/lib/action_dispatch/middleware/templates/rescues/diagnostics.html.erb within rescues/layout (26.9ms)
+Started GET "/accounts/1/edit" for 127.0.0.1 at 2017-05-04 01:03:20 +0530
+Processing by AccountsController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mAccount Load (0.5ms)[0m  [1m[34mSELECT  "accounts".* FROM "accounts" ORDER BY "accounts"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  Rendering accounts/edit.html.erb within layouts/application
+  Rendered accounts/edit.html.erb within layouts/application (1.1ms)
+  Rendered layouts/papaye/_navigation.html.erb (1.7ms)
+  Rendered layouts/_navigation.html.erb (3.2ms)
+  Rendered layouts/_topnavbar.html.erb (0.6ms)
+  Rendered layouts/_footer.html.erb (0.4ms)
+Completed 200 OK in 123ms (Views: 119.7ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/accounts/1/edit" for 127.0.0.1 at 2017-05-04 01:03:23 +0530
+Processing by AccountsController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mAccount Load (0.4ms)[0m  [1m[34mSELECT  "accounts".* FROM "accounts" ORDER BY "accounts"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  Rendering accounts/edit.html.erb within layouts/application
+  Rendered accounts/edit.html.erb within layouts/application (1.1ms)
+  Rendered layouts/papaye/_navigation.html.erb (1.6ms)
+  Rendered layouts/_navigation.html.erb (3.3ms)
+  Rendered layouts/_topnavbar.html.erb (0.6ms)
+  Rendered layouts/_footer.html.erb (1.2ms)
+Completed 200 OK in 148ms (Views: 145.0ms | ActiveRecord: 0.4ms)
+
+

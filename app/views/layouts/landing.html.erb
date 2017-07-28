@@ -1,0 +1,25 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title><%= page_title %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application', media: 'all' %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <% if flash.present? %>
+    <% flash.each do |name, msg| %>
+    <div class="alert info alert-<%= name == :notice || name == "notice" ? "success" : "danger" %> fade in" id="flash-message">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <%= content_tag :div, msg, id: "flash_#{name}" if msg.is_a?(String) %>
+    </div>
+    <% end %>
+  <% end %>
+
+  <%= yield %>
+</body>
+</html>

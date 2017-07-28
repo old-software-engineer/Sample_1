@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= t('errors.error_404')%></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= stylesheet_link_tag 'admin', media: 'all' %>
+</head>
+<body class="gray-bg">
+  <div class="middle-box text-center animated fadeInDown error-page">
+    <h1>404</h1>
+    <h3 class="font-bold"><%= t('errors.page_not_found')%></h3>
+
+    <div class="error-desc">
+        <%= t('errors.contract_unauthorized')%>
+    </div>
+  </div>
+</body>
+</html>
